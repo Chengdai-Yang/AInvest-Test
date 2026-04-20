@@ -1,0 +1,1678 @@
+<!DOCTYPE html><html lang="en"><head>
+
+
+
+
+
+
+
+
+
+
+
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crypto Home — AInvest</title>
+<link rel="stylesheet" href="colors_and_type.css">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #1a1a2e;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    padding: 24px 0 48px;
+  }
+
+  /* ── Phone shell ── */
+  .phone {
+    width: 375px;
+    min-height: 812px;
+    background: #f2f2f2;
+    border-radius: 44px;
+    overflow: hidden;
+    box-shadow: 0 32px 80px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(255,255,255,0.08);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── Status bar ── */
+  .status-bar {
+    background: #fff;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px 0 28px;
+    flex-shrink: 0;
+  }
+  .status-time { font-weight: 600; font-size: 15px; color: #000; }
+  .status-icons { display: flex; align-items: center; gap: 6px; }
+  .status-icons svg { fill: #000; }
+
+  /* ── Search bar (nav level 1) ── */
+  .nav-primary {
+    background: #fff;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 16px;
+    flex-shrink: 0;
+  }
+  .avatar {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: #d9d9d9;
+    flex-shrink: 0;
+    overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .search-bar {
+    flex: 1;
+    height: 36px;
+    background: rgba(0,0,0,0.05);
+    border-radius: 9999px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0 12px;
+    color: rgba(0,0,0,0.4);
+    font-size: 14px;
+  }
+  .search-bar svg { flex-shrink: 0; }
+  .scan-icon { margin-left: auto; }
+
+  /* ── Top tabs (Stocks / ETFs / Crypto / Options) ── */
+  .nav-tabs-l1 {
+    background: #fff;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    gap: 24px;
+    border-bottom: 0.5px solid rgba(0,0,0,0.08);
+    flex-shrink: 0;
+  }
+  .tab-l1 {
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(0,0,0,0.4);
+    cursor: pointer;
+    position: relative;
+    height: 44px;
+    display: flex; align-items: center;
+  }
+  .tab-l1.active {
+    color: #000;
+    font-weight: 700;
+  }
+  .tab-l1.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: #000000;
+    border-radius: 0;
+  }
+
+  /* ── Scroll container ── */
+  .scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+  .scroll-area::-webkit-scrollbar { display: none; }
+
+  /* ── Sub tabs (Market / Tools / Future) ── */
+  .sub-tabs {
+    background: #fff;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    padding: 6px 16px;
+    gap: 8px;
+    margin-bottom: 6px;
+    flex-shrink: 0;
+  }
+  .sub-tab {
+    height: 32px;
+    padding: 0 16px;
+    border-radius: 9999px;
+    display: flex; align-items: center;
+    font-size: 14px;
+    font-weight: 600;
+    color: rgba(0,0,0,0.6);
+    cursor: pointer;
+    background: transparent;
+    border: none;
+  }
+  .sub-tab.active {
+    background: #000;
+    color: #fff;
+  }
+
+  /* ── Section cards ── */
+  .section {
+    background: #fff;
+    margin-bottom: 6px;
+    padding: 12px 0;
+  }
+  .section-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #000;
+    padding: 10px 16px;
+    display: flex; align-items: center; gap: 6px;
+    height: 44px;
+  }
+  .chevron-right {
+    width: 20px; height: 20px;
+    display: flex; align-items: center; justify-content: center;
+    color: rgba(0,0,0,0.4);
+  }
+
+  /* ── Market Overview ── */
+  .market-overview-cards {
+    display: flex;
+    gap: 8px;
+    padding: 6px 16px 10px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    scroll-padding-left: 16px;
+  }
+  .market-overview-cards::-webkit-scrollbar { display: none; }
+  .market-card {
+    flex-shrink: 0;
+    width: 160px;
+    border: 2px solid rgba(0,0,0,0.05);
+    border-radius: 10px;
+    background: #fff;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    height: 180px;
+    position: relative;
+    overflow: hidden;
+    scroll-snap-align: start;
+  }
+  .market-card-title {
+    font-size: 14px;
+    font-weight: 590;
+    color: #000;
+    text-align: center;
+    line-height: 1.3;
+    margin-bottom: 2px;
+  }
+  .market-card-sub {
+    font-size: 12px;
+    color: rgba(0,0,0,0.6);
+    text-align: center;
+  }
+
+  /* Fear & Greed gauge */
+  .gauge-wrap {
+    position: relative;
+    width: 138px;
+    height: 73px;
+    margin-top: 12px;
+  }
+  .gauge-svg { width: 100%; height: 100%; }
+  .gauge-center {
+    position: absolute;
+    bottom: 4px; left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+  }
+  .gauge-number {
+    font-size: 28px;
+    font-weight: 700;
+    color: #000;
+    line-height: 1;
+    display: block;
+  }
+  .gauge-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: rgba(0,0,0,0.6);
+    white-space: nowrap;
+  }
+
+  /* Altcoin card */
+  .altcoin-number {
+    font-size: 30px;
+    font-weight: 700;
+    color: #000;
+    margin-top: 36px;
+  }
+  .altcoin-arrow {
+    margin-top: 8px;
+    width: 0; height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 8px solid #000;
+  }
+  .altcoin-bar-wrap {
+    width: 100%;
+    margin-top: 10px;
+    position: relative;
+  }
+  .altcoin-bar-track {
+    width: 100%; height: 10px;
+    border-radius: 10px;
+    background: #165DFF;
+    position: relative;
+    overflow: hidden;
+  }
+  .altcoin-bar-fill {
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 44%;
+    background: #FFAA00;
+    border-radius: 10px;
+  }
+  .altcoin-bar-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 4px;
+  }
+  .altcoin-bar-labels span { font-size: 12px; font-weight: 700; }
+
+  /* ── Major Crypto horizontal scroll ── */
+  .major-crypto-scroll {
+    display: flex;
+    gap: 8px;
+    padding: 6px 16px 10px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    scroll-padding-left: 16px;
+  }
+  .major-crypto-scroll::-webkit-scrollbar { display: none; }
+  .crypto-chip {
+    min-width: 100px;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 10px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex-shrink: 0;
+    background: #fff;
+    scroll-snap-align: start;
+  }
+  .crypto-chip-icon {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700; color: #fff;
+  }
+  .crypto-chip-ticker { font-size: 14px; font-weight: 700; color: #000; margin-top: 4px; }
+  .crypto-chip-name { font-size: 11px; color: rgba(0,0,0,0.5); }
+  .crypto-chip-price { font-size: 13px; font-weight: 700; color: #000; }
+  .crypto-chip-change { font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 2px; }
+  .up { color: #009B67; }
+  .down { color: #FF381A; }
+
+  /* Mini sparkline */
+  .sparkline { width: 50px; height: 24px; }
+
+  /* ── Crypto News ── */
+  .news-scroll {
+    display: flex;
+    gap: 8px;
+    padding: 6px 16px 10px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    scroll-padding-left: 16px;
+  }
+  .news-scroll::-webkit-scrollbar { display: none; }
+  .news-card {
+    width: 168px;
+    border-radius: 10px;
+    flex-shrink: 0;
+    overflow: hidden;
+    scroll-snap-align: start;
+  }
+  .news-card-header {
+    height: 40px;
+    display: flex; align-items: center;
+    padding: 0 12px;
+    gap: 6px;
+    justify-content: space-between;
+  }
+  .news-card-header-left { display: flex; align-items: center; gap: 6px; }
+  .news-card-header-label {
+    font-size: 12px; font-weight: 700; color: #fff;
+  }
+  .news-card-body {
+    background: #f2f2f2;
+    padding: 12px;
+    height: 140px;
+    display: flex; flex-direction: column; justify-content: space-between;
+  }
+  .news-card-text {
+    font-size: 14px; font-weight: 700; color: #000;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .news-card-footer {
+    display: flex; align-items: center; gap: 6px;
+    background: #fff;
+    border-radius: 20px;
+    padding: 2px 8px 2px 2px;
+    font-size: 12px; font-weight: 700;
+  }
+  .news-avatar {
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: #d9d9d9;
+    flex-shrink: 0;
+  }
+
+  /* ── ETF Fund Flow ── */
+  .etf-section { background: #fff; margin-bottom: 6px; padding: 12px 16px; overflow: hidden; }
+  .segment-tabs {
+    display: flex;
+    background: rgba(0,0,0,0.05);
+    border-radius: 9999px;
+    padding: 3px;
+    gap: 3px;
+    height: 36px;
+    margin-top: 8px;
+  }
+  .seg-tab {
+    flex: 1;
+    border-radius: 9999px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 600;
+    color: rgba(0,0,0,0.5);
+    cursor: pointer;
+  }
+  .seg-tab.active { background: #fff; color: #000; box-shadow: 0 1px 4px rgba(0,0,0,0.12); }
+
+  .text-tabs {
+    display: flex;
+    gap: 16px;
+    margin-top: 8px;
+    padding-bottom: 6px;
+    border-bottom: 0.5px solid rgba(0,0,0,0.08);
+    overflow-x: auto;
+  }
+  .text-tabs::-webkit-scrollbar { display: none; }
+  .text-tab {
+    font-size: 13px; font-weight: 500;
+    color: rgba(0,0,0,0.4);
+    cursor: pointer;
+    white-space: nowrap;
+    padding-bottom: 4px;
+    flex-shrink: 0;
+  }
+  .text-tab.active {
+    color: #000;
+    font-weight: 700;
+    border-bottom: 2px solid #000;
+  }
+
+  .legend-row {
+    display: flex;
+    gap: 16px;
+    margin: 12px 0 8px;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .legend-left { display: flex; gap: 16px; }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: rgba(0,0,0,0.6); }
+  .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+
+  .timeframe-select {
+    font-size: 13px; font-weight: 600; color: rgba(0,0,0,0.6);
+    display: flex; align-items: center; gap: 2px;
+  }
+
+  /* Bar chart */
+  .bar-chart {
+    width: 100%;
+    height: 140px;
+    position: relative;
+    margin-bottom: 4px;
+  }
+  .bar-chart svg { width: 100%; height: 100%; }
+  .chart-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    color: rgba(0,0,0,0.4);
+    margin-top: 4px;
+  }
+
+  /* ── Crypto List ── */
+  .crypto-list-section { background: #fff; margin-bottom: 6px; padding: 12px 0; }
+  .list-tabs {
+    display: flex;
+    gap: 8px;
+    padding: 6px 16px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .list-tabs::-webkit-scrollbar { display: none; }
+  .list-tab {
+    height: 32px;
+    padding: 0 14px;
+    border-radius: 9999px;
+    font-size: 13px; font-weight: 600;
+    color: rgba(0,0,0,0.5);
+    cursor: pointer;
+    background: rgba(0,0,0,0.05);
+    border: none;
+    white-space: nowrap;
+    flex-shrink: 0;
+    display: flex; align-items: center; gap: 4px;
+  }
+  .list-tab.active {
+    background: #000;
+    color: #fff;
+  }
+  .new-badge {
+    font-size: 10px; font-weight: 700;
+    background: #165DFF;
+    color: #fff;
+    border-radius: 9999px;
+    padding: 1px 5px;
+  }
+
+  .list-header {
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    height: 40px;
+    border-bottom: 0.5px solid rgba(0,0,0,0.08);
+  }
+  .list-header-sym { flex: 1; font-size: 12px; color: rgba(0,0,0,0.5); }
+  .list-header-chart { width: 64px; font-size: 12px; color: rgba(0,0,0,0.5); text-align: center; }
+  .list-header-chg { width: 88px; font-size: 12px; color: rgba(0,0,0,0.5); text-align: right; }
+  .list-header-chg.active-col { color: #000; font-weight: 700; }
+
+  .list-row {
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    height: 74px;
+    border-bottom: 0.5px solid rgba(0,0,0,0.06);
+  }
+  .list-row:last-child { border-bottom: none; }
+  .row-info { display: flex; align-items: center; gap: 8px; flex: 1; }
+  .row-avatar {
+    width: 32px; height: 32px; border-radius: 50%;
+    flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700; color: #fff;
+  }
+  .row-name-wrap { display: flex; flex-direction: column; gap: 3px; }
+  .row-ticker { font-size: 16px; font-weight: 700; color: #000; }
+  .row-name { font-size: 12px; color: rgba(0,0,0,0.5); }
+  .row-chart { width: 64px; display: flex; align-items: center; justify-content: center; }
+  .row-right { width: 88px; display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+  .row-price { font-size: 16px; font-weight: 700; color: #000; text-align: right; }
+  .row-badge {
+    height: 24px; min-width: 72px;
+    border-radius: 4px;
+    display: flex; align-items: center; justify-content: flex-end;
+    padding: 0 8px;
+    font-size: 14px; font-weight: 500; color: #fff;
+  }
+
+  /* ── Bottom tab bar ── */
+  .bottom-bar {
+    background: #fff;
+    border-top: 0.5px solid rgba(0,0,0,0.08);
+    flex-shrink: 0;
+    padding-bottom: 16px;
+  }
+  .aime-prompt {
+    margin: 8px 12px 0;
+    height: 40px;
+    background: rgba(0,0,0,0.04);
+    border-radius: 9999px;
+    display: flex; align-items: center;
+    padding: 0 16px;
+    gap: 8px;
+  }
+  .aime-prompt-icon {
+    width: 20px; height: 20px;
+    background: #165DFF;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; color: #fff; font-weight: 700;
+    flex-shrink: 0;
+  }
+  .aime-prompt-text { font-size: 13px; color: rgba(0,0,0,0.4); }
+  .tab-bar {
+    display: flex;
+    padding: 8px 0 0;
+  }
+  .tab-bar-item {
+    flex: 1;
+    display: flex; flex-direction: column; align-items: center; gap: 3px;
+    cursor: pointer;
+  }
+  .tab-bar-icon { width: 24px; height: 24px; }
+  .tab-bar-label { font-size: 10px; font-weight: 500; color: rgba(0,0,0,0.4); }
+  .tab-bar-item.active .tab-bar-label { color: #000; font-weight: 700; }
+  .tab-bar-item.active svg path, .tab-bar-item.active svg rect, .tab-bar-item.active svg circle { fill: #000; }
+
+  /* ── Detail Panel ── */
+  .detail-panel {
+    position: absolute;
+    inset: 0;
+    background: #fff;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    transform: translateY(100%);
+    transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 44px;
+    overflow: hidden;
+  }
+  .detail-panel.open {
+    transform: translateY(0);
+  }
+  .detail-header {
+    display: flex;
+    align-items: center;
+    padding: 16px 16px 8px;
+    gap: 10px;
+    border-bottom: 0.5px solid rgba(0,0,0,0.08);
+  }
+  .detail-back {
+    width: 36px; height: 36px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.05);
+    flex-shrink: 0;
+  }
+  .detail-back:active { background: rgba(0,0,0,0.1); }
+  .detail-coin-icon {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; font-weight: 700; color: #fff;
+    flex-shrink: 0;
+  }
+  .detail-name-wrap { flex: 1; }
+  .detail-ticker { font-size: 18px; font-weight: 700; color: #000; }
+  .detail-name { font-size: 13px; color: rgba(0,0,0,0.5); }
+  .detail-price-section { padding: 20px 16px 12px; }
+  .detail-price { font-size: 36px; font-weight: 700; color: #000; }
+  .detail-change-row { display: flex; align-items: center; gap: 8px; margin-top: 4px; }
+  .detail-change-badge {
+    height: 24px; padding: 0 10px; border-radius: 4px;
+    display: flex; align-items: center;
+    font-size: 14px; font-weight: 600; color: #fff;
+  }
+  .detail-change-label { font-size: 13px; color: rgba(0,0,0,0.5); }
+  .detail-chart-area {
+    padding: 0 16px;
+    height: 160px;
+    position: relative;
+  }
+  .detail-chart-area svg { width: 100%; height: 100%; }
+  .detail-timeframe-row {
+    display: flex; gap: 4px; padding: 12px 16px;
+  }
+  .detail-tf-btn {
+    flex: 1; height: 30px; border-radius: 6px;
+    border: none; background: transparent;
+    font-size: 13px; font-weight: 600;
+    color: rgba(0,0,0,0.4); cursor: pointer;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+  .detail-tf-btn.active { background: #000; color: #fff; }
+  .detail-stats { padding: 0 16px; display: flex; flex-wrap: wrap; gap: 0; }
+  .detail-stat { width: 50%; padding: 12px 0; border-bottom: 0.5px solid rgba(0,0,0,0.06); }
+  .detail-stat-label { font-size: 12px; color: rgba(0,0,0,0.5); margin-bottom: 2px; }
+  .detail-stat-value { font-size: 15px; font-weight: 700; color: #000; }
+  .detail-actions { display: flex; gap: 12px; padding: 16px; margin-top: auto; }
+  .detail-btn {
+    flex: 1; height: 48px; border-radius: 10px; border: none;
+    font-size: 16px; font-weight: 700; cursor: pointer;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+  .detail-btn-buy { background: #009B67; color: #fff; }
+  .detail-btn-sell { background: rgba(0,0,0,0.06); color: #000; }
+
+  /* ── Search Overlay ── */
+  .search-overlay {
+    position: absolute;
+    inset: 0;
+    background: #fff;
+    z-index: 90;
+    display: flex;
+    flex-direction: column;
+    transform: translateY(-100%);
+    opacity: 0;
+    transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.28s;
+    border-radius: 44px;
+    overflow: hidden;
+  }
+  .search-overlay.open { transform: translateY(0); opacity: 1; }
+  .search-overlay-bar {
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px 16px; border-bottom: 0.5px solid rgba(0,0,0,0.08);
+  }
+  .search-overlay-input {
+    flex: 1; height: 36px;
+    background: rgba(0,0,0,0.05);
+    border-radius: 9999px;
+    border: none; outline: none;
+    padding: 0 12px;
+    font-size: 14px; font-family: 'Plus Jakarta Sans', sans-serif;
+    color: #000;
+  }
+  .search-cancel {
+    font-size: 14px; font-weight: 600; color: #165DFF;
+    cursor: pointer; white-space: nowrap;
+  }
+  .search-results { padding: 8px 0; overflow-y: auto; flex: 1; }
+  .search-result-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 16px; cursor: pointer;
+  }
+  .search-result-item:active { background: rgba(0,0,0,0.04); }
+  .search-result-icon {
+    width: 36px; height: 36px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 700; color: #fff; flex-shrink: 0;
+  }
+  .search-result-name { font-size: 15px; font-weight: 700; color: #000; }
+  .search-result-sub { font-size: 12px; color: rgba(0,0,0,0.5); }
+  .search-result-price { margin-left: auto; text-align: right; }
+  .search-result-price-val { font-size: 15px; font-weight: 700; color: #000; }
+  .search-result-change { font-size: 12px; font-weight: 600; }
+
+  /* ── Tap ripple ── */
+  .list-row { cursor: pointer; transition: background 0.15s; }
+  .list-row:active { background: rgba(0,0,0,0.04); }
+  .crypto-chip { cursor: pointer; transition: transform 0.15s, box-shadow 0.15s; }
+  .crypto-chip:active { transform: scale(0.97); }
+</style>
+</head>
+<body data-cc-id="cc-1" style="cursor: default;">
+<div class="phone">
+
+  <!-- Status Bar -->
+  <div class="status-bar">
+    <span class="status-time">9:41</span>
+    <div class="status-icons">
+      <svg width="17" height="12" viewBox="0 0 17 12"><rect x="0" y="3" width="3" height="9" rx="1"></rect><rect x="4.5" y="2" width="3" height="10" rx="1"></rect><rect x="9" y="0" width="3" height="12" rx="1"></rect><rect x="13.5" y="0" width="3" height="12" rx="1" opacity=".3"></rect></svg>
+      <svg width="16" height="12" viewBox="0 0 16 12"><path d="M8 2.5C10.3 2.5 12.4 3.5 13.8 5.1L15.5 3.2C13.6 1.2 11 0 8 0S2.4 1.2.5 3.2L2.2 5.1C3.6 3.5 5.7 2.5 8 2.5Z" opacity=".3"></path><path d="M8 5C9.6 5 11 5.7 12 6.8L13.7 4.9C12.3 3.4 10.3 2.5 8 2.5S3.7 3.4 2.3 4.9L4 6.8C5 5.7 6.4 5 8 5Z" opacity=".6"></path><path d="M8 7.5C9 7.5 9.8 7.9 10.4 8.6L8 11.5L5.6 8.6C6.2 7.9 7 7.5 8 7.5Z"></path></svg>
+      <svg width="25" height="12" viewBox="0 0 25 12"><rect x="0" y="1" width="22" height="10" rx="3" stroke="#000" stroke-width="1" fill="none" opacity=".35"></rect><rect x="23" y="4" width="2" height="4" rx="1" fill="#000" opacity=".4"></rect><rect x="1" y="2" width="18" height="8" rx="0" fill="#000"></rect></svg>
+    </div>
+  </div>
+
+  <!-- Nav Primary -->
+  <div class="nav-primary">
+    <div class="avatar">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="rgba(0,0,0,0.3)"><circle cx="10" cy="7" r="4"></circle><path d="M2 17c0-4 3.6-7 8-7s8 3 8 7"></path></svg>
+    </div>
+    <div class="search-bar">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="rgba(0,0,0,0.4)" stroke-width="1.5"><circle cx="6" cy="6" r="4.5"></circle><path d="M10 10L13 13"></path></svg>
+      <span>Symbol/Name</span>
+    </div>
+    <div class="scan-icon">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#000" stroke-width="1.5"><rect x="2" y="2" width="5" height="5" rx="1"></rect><rect x="13" y="2" width="5" height="5" rx="1"></rect><rect x="2" y="13" width="5" height="5" rx="1"></rect><path d="M13 13h5M13 16h2M16 13v5"></path></svg>
+    </div>
+  </div>
+
+  <!-- L1 Tabs -->
+  <div class="nav-tabs-l1" data-cc-id="cc-8">
+    <div class="tab-l1">Stocks</div>
+    <div class="tab-l1">ETFs</div>
+    <div class="tab-l1 active" data-cc-id="cc-7" style="line-height: 1.4;">Crypto</div>
+    <div class="tab-l1" data-cc-id="cc-9" style="">Options</div>
+  </div>
+
+  <!-- Scroll area starts -->
+  <div class="scroll-area" data-cc-id="cc-3">
+
+    <!-- Sub tabs -->
+    <div class="sub-tabs" data-cc-id="cc-6">
+      <button class="sub-tab active" data-cc-id="cc-5" style="font-family: &quot;Plus Jakarta Sans&quot;;">Market</button>
+      <button class="sub-tab" data-cc-id="cc-10" style="font-family: &quot;Plus Jakarta Sans&quot;;">Tools</button>
+      <button class="sub-tab" data-cc-id="cc-11" style="font-family: &quot;Plus Jakarta Sans&quot;;">Future</button>
+    </div>
+
+    <!-- Market Overview -->
+    <div class="section" data-cc-id="cc-4">
+      <div class="section-title">Market Overview</div>
+      <div class="market-overview-cards" data-cc-id="cc-3">
+
+        <!-- Greed & Fear -->
+        <div class="market-card" data-cc-id="cc-4">
+          <div class="market-card-title">Greed &amp; Fear Index</div>
+          <div class="market-card-sub">Update: Dec.12 2020</div>
+          <div class="gauge-wrap" style="margin-top:16px;">
+            <svg viewBox="0 0 138 73" class="gauge-svg" data-cc-id="cc-5" style="width: 138px;">
+              <!-- gauge arcs -->
+             <!-- path d="M4 38.8475C4 26.6513 7.35903 15.2396 13.2024 5.48712" fill="none" stroke="#e8e8e8" stroke-width="8" ></path>
+              <!-- Extreme Fear: red -->
+              <path d="M4 69.0001C4 56.8038 7.35903 45.3921 13.2024 35.6396" fill="none" stroke="#FF381A" stroke-width="8" data-cc-id="cc-17" style="stroke-width: 8px;"></path>
+              <!-- Fear: orange -->
+              <path d="M18.9512 27.5235C25.5969 19.513 34.1291 13.124 43.8665 9.0376" fill="none" stroke="#FF7040" stroke-width="8" style="stroke-width: 8px;"></path>
+              <!-- Neutral: yellow -->
+              <path d="M53.6738 5.81723C58.5882 4.62939 63.7206 4 68.9999 4C74.3715 4 79.5908 4.65158 84.5833 5.88" fill="none" stroke="#FFAA00" stroke-width="8" data-cc-id="cc-15" style="stroke-width: 8px;"></path>
+              <!-- Greed: light green -->
+              <path d="M94.3984 9.14917C104.026 13.2398 112.464 19.5856 119.05 27.5235" fill="none" stroke="#5DB52A" stroke-width="8" data-cc-id="cc-14" style="stroke-width: 8px;"></path>
+              <!-- Greed: green -->
+              <path d="M134 69C134 56.8041 130.641 45.3927 124.798 35.640" fill="none" stroke="#009B67" stroke-width="8" data-cc-id="cc-14" style="stroke-width: 8px;"></path>
+              <!-- Indicator dot at 28/100 on arc (angle=129.6°, x=30, y=23) -->
+              <circle cx="25" cy="20" r="7" fill="#000" stroke="#fff" stroke-width="1"></circle>
+            </svg>
+            <div class="gauge-center" style="bottom:0;" data-cc-id="cc-18">
+              <span class="gauge-number" data-cc-id="cc-12" style="font-size: 30px;">28</span>
+              <span class="gauge-label" data-cc-id="cc-13" style="font-weight: 600;">Extremely Fear</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Altcoin Season Index -->
+        <div class="market-card" data-cc-id="cc-21">
+          <div class="market-card-title" style="margin-top: 0px;" data-cc-id="cc-2">Altcoin Season Index</div>
+          <div class="altcoin-number" data-cc-id="cc-20" style="margin: 16px 0px 0px;">43</div>
+          <div class="altcoin-arrow"></div>
+          <div class="altcoin-bar-wrap" style="margin-top:12px;">
+            <div class="altcoin-bar-track" data-cc-id="cc-19">
+              <div class="altcoin-bar-fill" data-cc-id="cc-23" style="border-radius: 10px 0px 0px 10px;"></div>
+            </div>
+            <div class="altcoin-bar-labels">
+              <span style="color: rgb(255, 170, 0); font-weight: 300;" data-cc-id="cc-22">Bitcoin</span>
+              <span style="color: rgb(22, 93, 255); font-weight: 300;" data-cc-id="cc-24">Altcoin</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- BTC Dominance -->
+        <div class="market-card">
+          <div class="market-card-title">BTC Dominance</div>
+          <div class="market-card-sub">vs. Total Market</div>
+          <div style="margin-top:18px;font-size:30px;font-weight:700;color:#000;">54.3%</div>
+          <div style="margin-top:6px;font-size:12px;font-weight:600;color:#009B67;">▲ +0.4% today</div>
+          <svg viewBox="0 0 120 40" style="width:120px;margin-top:12px;" fill="none">
+            <polyline points="0,32 15,28 30,24 45,26 60,18 75,20 90,14 105,10 120,8" stroke="#F7931A" stroke-width="2" fill="none"/>
+          </svg>
+        </div>
+
+        <!-- Global Market Cap -->
+        <div class="market-card">
+          <div class="market-card-title">Global Market Cap</div>
+          <div class="market-card-sub">Total Crypto</div>
+          <div style="margin-top:14px;font-size:22px;font-weight:700;color:#000;line-height:1.2;">$3.12T</div>
+          <div style="margin-top:4px;font-size:12px;font-weight:600;color:#009B67;">▲ +1.87%</div>
+          <svg viewBox="0 0 120 40" style="width:120px;margin-top:10px;" fill="none">
+            <defs><linearGradient id="mcapGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#165DFF" stop-opacity="0.2"/><stop offset="100%" stop-color="#165DFF" stop-opacity="0"/></linearGradient></defs>
+            <path d="M0,30 10,26 25,28 40,20 55,22 70,16 85,12 100,8 120,6 L120,40 L0,40Z" fill="url(#mcapGrad)"/>
+            <polyline points="0,30 10,26 25,28 40,20 55,22 70,16 85,12 100,8 120,6" stroke="#165DFF" stroke-width="2" fill="none"/>
+          </svg>
+        </div>
+
+        <!-- 24h Volume -->
+        <div class="market-card">
+          <div class="market-card-title">24h Volume</div>
+          <div class="market-card-sub">All Crypto</div>
+          <div style="margin-top:14px;font-size:22px;font-weight:700;color:#000;line-height:1.2;">$128.4B</div>
+          <div style="margin-top:4px;font-size:12px;font-weight:600;color:#FF381A;">▼ -3.21%</div>
+          <div style="margin-top:14px;width:100%;display:flex;gap:2px;align-items:flex-end;height:40px;">
+            <div style="flex:1;background:#009B67;height:60%;border-radius:2px;"></div>
+            <div style="flex:1;background:#009B67;height:80%;border-radius:2px;"></div>
+            <div style="flex:1;background:#009B67;height:50%;border-radius:2px;"></div>
+            <div style="flex:1;background:#009B67;height:90%;border-radius:2px;"></div>
+            <div style="flex:1;background:#FF381A;height:40%;border-radius:2px;"></div>
+            <div style="flex:1;background:#FF381A;height:60%;border-radius:2px;"></div>
+            <div style="flex:1;background:#009B67;height:70%;border-radius:2px;"></div>
+            <div style="flex:1;background:#FF381A;height:55%;border-radius:2px;"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="section" data-cc-id="cc-2">
+      <div class="section-title" data-cc-id="cc-1">Major Crypto</div>
+      <div class="major-crypto-scroll" data-cc-id="cc-1">
+
+        <!-- BTC -->
+        <div class="crypto-chip" data-cc-id="cc-27" style="width: 168px; height: 102px; background-color: rgb(242, 242, 242); border-style: none; flex-direction: colume; row-gap: 8px;">
+          <div class="crypto-chip-top"; style="align-items: center; gap: 4px; display: flex; flex-direction: colume;">
+            <div class="crypto-chip-icon" style="background:#F7931A;">₿</div>
+            <div class="crypto-chip-info">
+              <div class="crypto-chip-ticker">BTC</div>
+              <div class="crypto-chip-name">Bitcoin</div>
+            </div>
+          </div>
+          <div class="crypto-chip-bottom">
+            <div class="crypto-chip-price"; style="font-size: 14px; line-height: 18px; font-weight: 590; color: #000;">103,805.09</div>
+            <div class="crypto-chip-change down" style="font-size: 14px; line-height: 18px; font-weight: 590;"><svg width="10" height="10" viewBox="0 0 10 10" fill="#FF381A"><path d="M5 8L1 3h8z"></path></svg>-0.32%</div>
+          </div>
+
+        </div>
+
+        <!-- ETH -->
+        <div class="crypto-chip" data-cc-id="cc-1" style="width: 168px; height: 102px; background-color: rgb(242, 242, 242); border-style: none; flex-direction: colume; row-gap: 8px;">
+          <div class="crypto-chip-top"; style="align-items: center; gap: 4px; display: flex; flex-direction: colume;">
+            <div class="crypto-chip-icon" style="background:#627EEA;">Ξ</div>
+            <div class="crypto-chip-info">
+              <div class="crypto-chip-ticker">ETH</div>
+              <div class="crypto-chip-name">Ethereum</div>
+            </div>
+          </div>
+          <div class="crypto-chip-bottom">
+            <div class="crypto-chip-price"; style="font-size: 14px; line-height: 18px; font-weight: 590; color: #000;">2,619.38</div>
+            <div class="crypto-chip-change down" style="font-size: 14px; line-height: 18px; font-weight: 590;"><svg width="10" height="10" viewBox="0 0 10 10" fill="#FF381A"><path d="M5 8L1 3h8z"></path></svg>-0.32%</div>
+          </div>
+        </div>
+
+        <!-- XRP -->
+        <div class="crypto-chip" data-cc-id="cc-29" style="width: 168px; height: 102px; background-color: rgb(242, 242, 242); border-style: none; flex-direction: column;">
+          <div class="crypto-chip-top"; style="align-items: center; gap: 4px; display: flex; flex-direction: colume;">
+            <div class="crypto-chip-icon" style="background:#346AA9;">X</div>
+            <div class="crypto-chip-info">
+              <div class="crypto-chip-ticker">XRP</div>
+              <div class="crypto-chip-name">XRP</div>
+            </div>
+          </div>
+          <div class="crypto-chip-bottom">
+            <div class="crypto-chip-price"; style="font-size: 14px; line-height: 18px; font-weight: 590; color: #000;">2.8542</div>
+            <div class="crypto-chip-change down" style="font-size: 14px; line-height: 18px; font-weight: 590;"><svg width="10" height="10" viewBox="0 0 10 10" fill="#009B67"><path d="M5 8L1 3h8z"></path></svg>+1.12%</div>
+          </div>
+        </div>
+
+        <!-- SOL -->
+        <div class="crypto-chip" data-cc-id="cc-28" style="width: 168px; height: 102px; background-color: rgb(242, 242, 242); border-style: none; flex-direction: column; row-gap: 8px;">
+          <div class="crypto-chip-top"; style="align-items: center; gap: 4px; display: flex; flex-direction: colume;">
+            <div class="crypto-chip-icon" style="background:#9945FF;">◎</div>
+            <div class="crypto-chip-info">
+              <div class="crypto-chip-ticker">SOL</div>
+              <div class="crypto-chip-name">Solana</div>
+            </div>
+          </div>
+          <div class="crypto-chip-bottom">
+            <div class="crypto-chip-price"; style="font-size: 14px; line-height: 18px; font-weight: 590; color: #000;">205.16</div>
+            <div class="crypto-chip-change down" style="font-size: 14px; line-height: 18px; font-weight: 590;"><svg width="10" height="10" viewBox="0 0 10 10" fill="#009B67"><path d="M5 8L1 3h8z"></path></svg>+0.32%</div>
+          </div>
+        </div>
+
+        <!-- DOGE -->
+        <div class="crypto-chip" style="width: 168px; height: 102px; background-color: rgb(242, 242, 242); border-style: none; flex-direction: column; row-gap: 8px;">
+          <div class="crypto-chip-top"; style="align-items: center; gap: 4px; display: flex; flex-direction: colume;">
+            <div class="crypto-chip-icon" style="background:#C2A633;">Ð</div>
+            <div class="crypto-chip-info">
+              <div class="crypto-chip-ticker">DOGE</div>
+              <div class="crypto-chip-name">Dogecoin</div>
+            </div>
+          </div>
+          <div class="crypto-chip-bottom">
+            <div class="crypto-chip-price"; style="font-size: 14px; line-height: 18px; font-weight: 590; color: #000;">0.9999</div>
+            <div class="crypto-chip-change down" style="font-size: 14px; line-height: 18px; font-weight: 590;"><svg width="10" height="10" viewBox="0 0 10 10" fill="#009B67"><path d="M5 8L1 3h8z"></path></svg>+2.31%</div>
+          </div>
+        </div>
+
+        <!-- BNB -->
+        <div class="crypto-chip" style="width: 168px; height: 102px; background-color: rgb(242, 242, 242); border-style: none; flex-direction: column;">
+          <div class="crypto-chip-top"; style="align-items: center; gap: 4px; display: flex; flex-direction: colume;">
+            <div class="crypto-chip-icon" style="background:#F3BA2F;">B</div>
+            <div class="crypto-chip-info">
+              <div class="crypto-chip-ticker">BNB</div>
+              <div class="crypto-chip-name">Binance Coin</div>
+            </div>
+          </div>
+          <div class="crypto-chip-bottom">
+            <div class="crypto-chip-price"; style="font-size: 14px; line-height: 18px; font-weight: 590; color: #000;">321.45</div>
+            <div class="crypto-chip-change down" style="font-size: 14px; line-height: 18px; font-weight: 590;"><svg width="10" height="10" viewBox="0 0 10 10" fill="#009B67"><path d="M5 8L1 3h8z"></path></svg>+0.55%</div>
+          </div>
+        </div>
+
+        <!-- ADA -->
+        <div class="crypto-chip" data-coin="ADA" style="width: 168px; height: 102px; background-color: rgb(242, 242, 242); border-style: none; flex-direction: column; row-gap: 8px;">
+          <div class="crypto-chip-top" style="align-items: center; gap: 4px; display: flex;">
+            <div class="crypto-chip-icon" style="background:#0033AD;">₳</div>
+            <div class="crypto-chip-info">
+              <div class="crypto-chip-ticker">ADA</div>
+              <div class="crypto-chip-name">Cardano</div>
+            </div>
+          </div>
+          <div class="crypto-chip-bottom">
+            <div class="crypto-chip-price" style="font-size: 14px; line-height: 18px; font-weight: 590; color: #000;">0.7241</div>
+            <div class="crypto-chip-change up" style="font-size: 14px; line-height: 18px; font-weight: 590;"><svg width="10" height="10" viewBox="0 0 10 10" fill="#009B67"><path d="M5 2L1 7h8z"></path></svg>+2.34%</div>
+          </div>
+        </div>
+
+        <!-- AVAX -->
+        <div class="crypto-chip" data-coin="AVAX" style="width: 168px; height: 102px; background-color: rgb(242, 242, 242); border-style: none; flex-direction: column; row-gap: 8px;">
+          <div class="crypto-chip-top" style="align-items: center; gap: 4px; display: flex;">
+            <div class="crypto-chip-icon" style="background:#E84142;">A</div>
+            <div class="crypto-chip-info">
+              <div class="crypto-chip-ticker">AVAX</div>
+              <div class="crypto-chip-name">Avalanche</div>
+            </div>
+          </div>
+          <div class="crypto-chip-bottom">
+            <div class="crypto-chip-price" style="font-size: 14px; line-height: 18px; font-weight: 590; color: #000;">23.87</div>
+            <div class="crypto-chip-change down" style="font-size: 14px; line-height: 18px; font-weight: 590;"><svg width="10" height="10" viewBox="0 0 10 10" fill="#FF381A"><path d="M5 8L1 3h8z"></path></svg>-1.05%</div>
+          </div>
+        </div>
+
+        <!-- LINK -->
+        <div class="crypto-chip" data-coin="LINK" style="width: 168px; height: 102px; background-color: rgb(242, 242, 242); border-style: none; flex-direction: column; row-gap: 8px;">
+          <div class="crypto-chip-top" style="align-items: center; gap: 4px; display: flex;">
+            <div class="crypto-chip-icon" style="background:#2A5ADA;">⬡</div>
+            <div class="crypto-chip-info">
+              <div class="crypto-chip-ticker">LINK</div>
+              <div class="crypto-chip-name">Chainlink</div>
+            </div>
+          </div>
+          <div class="crypto-chip-bottom">
+            <div class="crypto-chip-price" style="font-size: 14px; line-height: 18px; font-weight: 590; color: #000;">13.42</div>
+            <div class="crypto-chip-change up" style="font-size: 14px; line-height: 18px; font-weight: 590;"><svg width="10" height="10" viewBox="0 0 10 10" fill="#009B67"><path d="M5 2L1 7h8z"></path></svg>+3.18%</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Crypto News -->
+    <div class="section">
+      <div class="section-title">Crypto News</div>
+      <div class="news-scroll">
+
+        <!-- Hot News card -->
+        <div class="news-card">
+          <div class="news-card-header" style="background:#FF6600;">
+            <div class="news-card-header-left">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M9 2C9 2 4 6 4 10C4 12.2 5.8 14 8 14C10.2 14 12 12.2 12 10C12 8.5 11 7 9.5 6.5L10 9C10 9 8 8 8 6C8 4.5 9 3 9 2Z" fill="white"></path></svg>
+              <span class="news-card-header-label">Hot News</span>
+            </div>
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="white" stroke-width="1.5"><path d="M4 2l4 4-4 4"></path></svg>
+          </div>
+          <div class="news-card-body">
+            <div class="news-card-text" data-cc-id="cc-2" style="font-weight: 600;">Jensen Huang: China AI Lockout a Tremendous Loss, Yet Analysts Stay Bullish on NVIDIA</div>
+            <div style="display:flex;gap:-4px;">
+              <div class="news-avatar" style="background:#627EEA;"></div>
+              <div class="news-avatar" style="background:#F7931A;margin-left:-4px;"></div>
+              <div class="news-avatar" style="background:#9945FF;margin-left:-4px;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Newswire card -->
+        <div class="news-card">
+          <div class="news-card-header" style="background:#165DFF;">
+            <div class="news-card-header-left">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="0" stroke="white" stroke-width="1.5"></rect><path d="M5.5 6h5M5.5 9h3" stroke="white" stroke-width="1.5" stroke-linecap="round"></path></svg>
+              <span class="news-card-header-label">Newswire</span>
+            </div>
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="white" stroke-width="1.5"><path d="M4 2l4 4-4 4"></path></svg>
+          </div>
+          <div class="news-card-body" data-cc-id="cc-7">
+            <div style="font-size:11px;color:rgba(0,0,0,0.5);margin-bottom:4px;">Today 14:24</div>
+            <div class="news-card-text" style="-webkit-line-clamp: 3; font-weight: 600;" data-cc-id="cc-3">Trump says he backs Ukraine, but early concessions to Russia spark concerns</div>
+            <div class="news-card-footer" data-cc-id="cc-8" style="gap: 2px;">
+              <div class="news-avatar" style="background:#F7931A;" data-cc-id="cc-6"></div>
+              <span style="color: rgb(0, 0, 0); font-weight: 600;" data-cc-id="cc-4">103,805.09</span>
+              <span class="down" data-cc-id="cc-5" style="font-weight: 600;">-0.32%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Analysis card -->
+        <div class="news-card">
+          <div class="news-card-header" style="background:#7B2FBE;">
+            <div class="news-card-header-left">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 12L6 8L9 10L13 5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <span class="news-card-header-label">Analysis</span>
+            </div>
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="white" stroke-width="1.5"><path d="M4 2l4 4-4 4"></path></svg>
+          </div>
+          <div class="news-card-body">
+            <div style="font-size:11px;color:rgba(0,0,0,0.5);margin-bottom:4px;">Today 11:05</div>
+            <div class="news-card-text" style="font-weight: 600;">Bitcoin tests $105K resistance — bulls need a weekly close above to confirm next leg</div>
+            <div class="news-card-footer">
+              <div class="news-avatar" style="background:#F7931A;"></div>
+              <span style="color:#000;font-weight:600;">103,801</span>
+              <span class="up" style="font-weight:600;">+1.20%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- On-Chain card -->
+        <div class="news-card">
+          <div class="news-card-header" style="background:#009B67;">
+            <div class="news-card-header-left">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="5.5" stroke="white" stroke-width="1.5"/><path d="M8 5v3l2 2" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+              <span class="news-card-header-label">On-Chain</span>
+            </div>
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="white" stroke-width="1.5"><path d="M4 2l4 4-4 4"></path></svg>
+          </div>
+          <div class="news-card-body">
+            <div style="font-size:11px;color:rgba(0,0,0,0.5);margin-bottom:4px;">Today 09:17</div>
+            <div class="news-card-text" style="font-weight: 600;">Ethereum whale wallets accumulate 280K ETH in 48 hours ahead of Pectra upgrade</div>
+            <div class="news-card-footer">
+              <div class="news-avatar" style="background:#627EEA;"></div>
+              <span style="color:#000;font-weight:600;">2,665.34</span>
+              <span class="up" style="font-weight:600;">+1.13%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- More News card -->
+        <div class="news-card">
+          <div class="news-card-header" style="background:#00CCC3;">
+            <div class="news-card-header-left">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 4h12M2 8h8M2 12h10" stroke="white" stroke-width="1.5" stroke-linecap="round"></path></svg>
+              <span class="news-card-header-label">More News</span>
+            </div>
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="white" stroke-width="1.5"><path d="M4 2l4 4-4 4"></path></svg>
+          </div>
+          <div class="news-card-body">
+            <div class="news-card-text">For more crypto information, you can check out here to catch up the market and newest situation</div>
+            <div class="news-card-footer">
+              <div class="news-avatar" style="background:#9945FF;"></div>
+              <span style="color:#000;">205.16</span>
+              <span class="down">-0.32%</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Crypto ETF Fund Flow -->
+    <div class="etf-section" data-cc-id="cc-18">
+      <div style="display:flex;align-items:center;gap:6px;height:44px;">
+        <span style="font-size:20px;font-weight:700;color:#000;">Crypto ETF Fund Flow</span>
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="rgba(0,0,0,0.4)" stroke-width="1.5"><path d="M7 4l6 6-6 6"></path></svg>
+      </div>
+
+      <!-- Segment tabs: Net Flow / AUM -->
+      <div class="segment-tabs">
+        <div class="seg-tab active">Net Flow</div>
+        <div class="seg-tab">AUM</div>
+      </div>
+
+      <!-- Text tabs -->
+      <div class="text-tabs" style="margin-top:12px;">
+        <div class="text-tab active style="font-weight: 590;">All</div>
+        <div class="text-tab style="font-weight: 400;">BTC</div>
+        <div class="text-tab style="font-weight: 400;">ETH</div>
+        <div class="text-tab style="font-weight: 400;">XRP</div>
+        <div class="text-tab style="font-weight: 400;">SOL</div>
+      </div>
+
+      <!-- Legend + timeframe -->
+      <div class="legend-row">
+        <div class="legend-left">
+          <div class="legend-item">
+            <div class="legend-dot" style="background:#009B67;"></div>
+            In Flow
+          </div>
+          <div class="legend-item">
+            <div class="legend-dot" style="background:#FF381A;"></div>
+            Out Flow
+          </div>
+        </div>
+        <div class="timeframe-select" style="font-weight: 400; font-size: 12px; line-height: 16px; color: rgba(0,0,0,0.6);">
+          3M
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="rgba(0,0,0,0.5)" stroke-width="1.5"><path d="M2 4l4 4 4-4"></path></svg>
+        </div>
+      </div>
+
+      <!-- Bar chart -->
+      <div class="bar-chart">
+        <svg viewBox="0 0 343 140" preserveAspectRatio="none">
+          <!-- Zero line -->
+          <line x1="0" y1="70" x2="343" y2="70" stroke="rgba(0,0,0,0.1)" stroke-width="0.5"></line>
+          <!-- Bars (illustrative) -->
+          <!-- In flow bars (green, above midline) -->
+          <rect x="4" y="30" width="8" height="40" fill="#009B67" rx="0"></rect>
+          <rect x="16" y="40" width="8" height="30" fill="#009B67" rx="0"></rect>
+          <rect x="28" y="20" width="8" height="50" fill="#009B67" rx="0"></rect>
+          <rect x="40" y="45" width="8" height="25" fill="#009B67" rx="0"></rect>
+          <rect x="52" y="35" width="8" height="35" fill="#009B67" rx="0"></rect>
+          <rect x="64" y="50" width="8" height="20" fill="#009B67" rx="0"></rect>
+          <rect x="76" y="15" width="8" height="55" fill="#009B67" rx="0"></rect>
+          <rect x="88" y="40" width="8" height="30" fill="#009B67" rx="0"></rect>
+          <rect x="100" y="25" width="8" height="45" fill="#009B67" rx="0" data-cc-id="cc-1"></rect>
+          <rect x="112" y="55" width="8" height="15" fill="#009B67" rx="0"></rect>
+          <!-- Out flow bars (red, below midline) -->
+          <rect x="124" y="70" width="8" height="35" fill="#FF381A" rx="0"></rect>
+          <rect x="136" y="70" width="8" height="20" fill="#FF381A" rx="0"></rect>
+          <rect x="148" y="70" width="8" height="45" fill="#FF381A" rx="0"></rect>
+          <rect x="160" y="70" width="8" height="15" fill="#FF381A" rx="0"></rect>
+          <!-- Mix -->
+          <rect x="172" y="45" width="8" height="25" fill="#009B67" rx="0"></rect>
+          <rect x="184" y="70" width="8" height="30" fill="#FF381A" rx="0"></rect>
+          <rect x="196" y="30" width="8" height="40" fill="#009B67" rx="0"></rect>
+          <rect x="208" y="70" width="8" height="40" fill="#FF381A" rx="0"></rect>
+          <rect x="220" y="35" width="8" height="35" fill="#009B67" rx="0"></rect>
+          <rect x="232" y="70" width="8" height="25" fill="#FF381A" rx="0"></rect>
+          <rect x="244" y="50" width="8" height="20" fill="#009B67" rx="0"></rect>
+          <rect x="256" y="70" width="8" height="50" fill="#FF381A" rx="0"></rect>
+          <rect x="268" y="25" width="8" height="45" fill="#009B67" rx="0"></rect>
+          <rect x="280" y="70" width="8" height="35" fill="#FF381A" rx="0"></rect>
+          <rect x="292" y="40" width="8" height="30" fill="#009B67" rx="0"></rect>
+          <rect x="304" y="70" width="8" height="20" fill="#FF381A" rx="0"></rect>
+          <rect x="316" y="15" width="8" height="55" fill="#009B67" rx="0"></rect>
+          <rect x="328" y="70" width="8" height="48" fill="#FF381A" rx="0"></rect>
+        </svg>
+      </div>
+      <div class="chart-labels">
+        <span>Jan. 2026</span>
+        <span>Feb. 2026</span>
+        <span>Mar. 2026</span>
+      </div>
+    </div>
+
+    <!-- Crypto List -->
+    <div class="crypto-list-section" data-cc-id="cc-15">
+      <div class="section-title" data-cc-id="cc-14">
+        Crypto List
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="rgba(0,0,0,0.4)" stroke-width="1.5" data-cc-id="cc-16"><path d="M7 4l6 6-6 6"></path></svg>
+      </div>
+
+      <!-- Scrollable category tabs -->
+      <div class="list-tabs" data-cc-id="cc-12">
+        <button class="list-tab active" data-cc-id="cc-17" style="font-weight: 500;">Top Gainers</button>
+        <button class="list-tab" data-cc-id="cc-13" style="font-weight: 500;">Top Losers</button>
+        <button class="list-tab" data-cc-id="cc-19" style="font-weight: 500;">New Coins</button>
+        <button class="list-tab" data-cc-id="cc-20" style="font-weight: 500;">DeFi</button>
+        <button class="list-tab" style="font-weight: 500;">Layer 1</button>
+        <button class="list-tab" style="font-weight: 500;">Platform</button>
+        <button class="list-tab" style="font-weight: 500;">Web3</button>
+        <button class="list-tab" style="font-weight: 500;">DAO</button>
+      </div>
+
+      <!-- Table header -->
+      <div class="list-header" data-cc-id="cc-1">
+        <div class="list-header-sym" data-cc-id="cc-11">Symbol</div>
+        <div class="list-header-chart"></div>
+        <div class="list-header-chg active-col">24h Chg%</div>
+      </div>
+
+      <!-- Rows -->
+      <!-- BTC -->
+      <div class="list-row" data-coin="BTC" data-cc-id="cc-2">
+        <div class="row-info" data-cc-id="cc-10">
+          <div class="row-avatar" style="background:#F7931A;">₿</div>
+          <div class="row-name-wrap">
+            <div class="row-ticker">BTCUSD</div>
+            <div class="row-name">Bitcoin</div>
+          </div>
+        </div>
+        <div class="row-chart">
+          <svg class="sparkline" viewBox="0 0 64 42" fill="none" data-cc-id="cc-4">
+            <polyline points="0,30 10,26 20,28 30,18 40,22 50,14 64,10" stroke="#009B67" stroke-width="1.5" fill="none"></polyline>
+          </svg>
+        </div>
+        <div class="row-right">
+          <div class="row-price" data-cc-id="cc-3">103,801.84</div>
+          <div class="row-badge" style="background:#009B67;">+1.20%</div>
+        </div>
+      </div>
+
+      <!-- ETH -->
+      <div class="list-row" data-coin="ETH" data-cc-id="cc-5">
+        <div class="row-info" data-cc-id="cc-6">
+          <div class="row-avatar" style="background:#627EEA;">Ξ</div>
+          <div class="row-name-wrap" data-cc-id="cc-8">
+            <div class="row-ticker" data-cc-id="cc-7">ETHUSD</div>
+            <div class="row-name" data-cc-id="cc-9">Ethereum</div>
+          </div>
+        </div>
+        <div class="row-chart">
+          <svg class="sparkline" viewBox="0 0 64 42" fill="none">
+            <polyline points="0,35 12,28 24,32 36,20 48,24 58,16 64,12" stroke="#009B67" stroke-width="1.5" fill="none"></polyline>
+          </svg>
+        </div>
+        <div class="row-right">
+          <div class="row-price">2,665.34</div>
+          <div class="row-badge" style="background:#009B67;">+1.13%</div>
+        </div>
+      </div>
+
+      <!-- XRP -->
+      <div class="list-row" data-coin="XRP">
+        <div class="row-info">
+          <div class="row-avatar" style="background:#346AA9;">X</div>
+          <div class="row-name-wrap">
+            <div class="row-ticker">XRPUSD</div>
+            <div class="row-name">XRP</div>
+          </div>
+        </div>
+        <div class="row-chart">
+          <svg class="sparkline" viewBox="0 0 64 42" fill="none">
+            <polyline points="0,25 12,30 24,22 36,28 48,18 58,20 64,14" stroke="#009B67" stroke-width="1.5" fill="none"></polyline>
+          </svg>
+        </div>
+        <div class="row-right">
+          <div class="row-price">2.5872</div>
+          <div class="row-badge" style="background:#009B67;">+0.89%</div>
+        </div>
+      </div>
+
+      <!-- USDT -->
+      <div class="list-row" data-coin="USDT">
+        <div class="row-info">
+          <div class="row-avatar" style="background:#26A17B;">₮</div>
+          <div class="row-name-wrap">
+            <div class="row-ticker">USDTUSD</div>
+            <div class="row-name">Tether USDt</div>
+          </div>
+        </div>
+        <div class="row-chart">
+          <svg class="sparkline" viewBox="0 0 64 42" fill="none">
+            <polyline points="0,22 12,24 24,20 36,22 48,21 58,23 64,21" stroke="#009B67" stroke-width="1.5" fill="none"></polyline>
+          </svg>
+        </div>
+        <div class="row-right">
+          <div class="row-price">182.64</div>
+          <div class="row-badge" style="background:#009B67;">+0.09%</div>
+        </div>
+      </div>
+
+      <!-- BNB -->
+      <div class="list-row" data-coin="BNB">
+        <div class="row-info">
+          <div class="row-avatar" style="background:#F3BA2F;">B</div>
+          <div class="row-name-wrap">
+            <div class="row-ticker">BNBUSD</div>
+            <div class="row-name">BNB</div>
+          </div>
+        </div>
+        <div class="row-chart">
+          <svg class="sparkline" viewBox="0 0 64 42" fill="none">
+            <polyline points="0,28 12,22 24,26 36,16 48,20 58,14 64,12" stroke="#009B67" stroke-width="1.5" fill="none"></polyline>
+          </svg>
+        </div>
+        <div class="row-right">
+          <div class="row-price">321.45</div>
+          <div class="row-badge" style="background:#009B67;">+0.55%</div>
+        </div>
+      </div>
+
+      <!-- SOL -->
+      <div class="list-row" data-coin="SOL">
+        <div class="row-info">
+          <div class="row-avatar" style="background:#9945FF;">◎</div>
+          <div class="row-name-wrap">
+            <div class="row-ticker">SOLUSD</div>
+            <div class="row-name">Solana</div>
+          </div>
+        </div>
+        <div class="row-chart">
+          <svg class="sparkline" viewBox="0 0 64 42" fill="none">
+            <polyline points="0,20 12,26 24,18 36,30 48,22 58,28 64,20" stroke="#FF381A" stroke-width="1.5" fill="none"></polyline>
+          </svg>
+        </div>
+        <div class="row-right">
+          <div class="row-price">662.38</div>
+          <div class="row-badge" style="background:#009B67;">+0.09%</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end scroll-area -->
+
+  <!-- Bottom Bar -->
+  <div class="bottom-bar">
+    <div class="aime-prompt">
+      <div class="aime-prompt-icon">✦</div>
+      <span class="aime-prompt-text">About AAPL's earnings?</span>
+      <span style="margin-left:auto;font-size:13px;color:rgba(0,0,0,0.3);">What's...</span>
+    </div>
+    <div class="tab-bar">
+      <!-- Market -->
+      <div class="tab-bar-item active">
+        <svg class="tab-bar-icon" viewBox="0 0 24 24" fill="none">
+          <rect x="3" y="13" width="4" height="8" rx="1" fill="#000"></rect>
+          <rect x="10" y="9" width="4" height="12" rx="1" fill="#000"></rect>
+          <rect x="17" y="5" width="4" height="16" rx="1" fill="#000"></rect>
+        </svg>
+        <span class="tab-bar-label" style="color:#000;font-weight:700;">Market</span>
+      </div>
+      <!-- Screener -->
+      <div class="tab-bar-item">
+        <svg class="tab-bar-icon" viewBox="0 0 24 24" fill="none" stroke="rgba(0,0,0,0.35)" stroke-width="1.5">
+          <circle cx="11" cy="11" r="7"></circle><path d="M16 16l4 4"></path>
+        </svg>
+        <span class="tab-bar-label">Screener</span>
+      </div>
+      <!-- Watchlists -->
+      <div class="tab-bar-item">
+        <svg class="tab-bar-icon" viewBox="0 0 24 24" fill="none" stroke="rgba(0,0,0,0.35)" stroke-width="1.5">
+          <path d="M12 21l-7-5a5 5 0 017-7 5 5 0 017 7z"></path>
+        </svg>
+        <span class="tab-bar-label">Watchlists</span>
+      </div>
+      <!-- Trade -->
+      <div class="tab-bar-item">
+        <svg class="tab-bar-icon" viewBox="0 0 24 24" fill="none" stroke="rgba(0,0,0,0.35)" stroke-width="1.5">
+          <circle cx="12" cy="12" r="9"></circle><path d="M12 8v4l3 3"></path>
+        </svg>
+        <span class="tab-bar-label">Trade</span>
+      </div>
+      <!-- News -->
+      <div class="tab-bar-item">
+        <svg class="tab-bar-icon" viewBox="0 0 24 24" fill="none" stroke="rgba(0,0,0,0.35)" stroke-width="1.5">
+          <rect x="3" y="4" width="18" height="16" rx="0"></rect><path d="M7 8h10M7 12h7M7 16h5"></path>
+        </svg>
+        <span class="tab-bar-label">News</span>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end phone -->
+
+<!-- ══════════════════════════════════════
+     DETAIL PANEL (slides up over phone)
+══════════════════════════════════════ -->
+<div class="detail-panel" id="detailPanel">
+  <div class="status-bar">
+    <span class="status-time">9:41</span>
+    <div class="status-icons">
+      <svg width="17" height="12" viewBox="0 0 17 12"><rect x="0" y="3" width="3" height="9" rx="1"/><rect x="4.5" y="2" width="3" height="10" rx="1"/><rect x="9" y="0" width="3" height="12" rx="1"/><rect x="13.5" y="0" width="3" height="12" rx="1" opacity=".3"/></svg>
+      <svg width="25" height="12" viewBox="0 0 25 12"><rect x="0" y="1" width="22" height="10" rx="3" stroke="#000" stroke-width="1" fill="none" opacity=".35"/><rect x="23" y="4" width="2" height="4" rx="1" fill="#000" opacity=".4"/><rect x="1" y="2" width="18" height="8" rx="0" fill="#000"/></svg>
+    </div>
+  </div>
+  <div class="detail-header">
+    <div class="detail-back" id="detailBack">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#000" stroke-width="2"><path d="M12 4l-6 6 6 6"/></svg>
+    </div>
+    <div class="detail-coin-icon" id="detailIcon"></div>
+    <div class="detail-name-wrap">
+      <div class="detail-ticker" id="detailTicker"></div>
+      <div class="detail-name" id="detailName"></div>
+    </div>
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="rgba(0,0,0,0.4)" stroke-width="1.5"><path d="M10 4v12M4 10h12"/></svg>
+  </div>
+  <div class="detail-price-section">
+    <div class="detail-price" id="detailPrice"></div>
+    <div class="detail-change-row">
+      <div class="detail-change-badge" id="detailBadge"></div>
+      <span class="detail-change-label">24h Change</span>
+    </div>
+  </div>
+  <div class="detail-chart-area">
+    <svg viewBox="0 0 343 160" fill="none" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#009B67" stop-opacity="0.18"/>
+          <stop offset="100%" stop-color="#009B67" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <path id="detailChartFill" fill="url(#chartGrad)"/>
+      <path id="detailChartLine" stroke="#009B67" stroke-width="2" fill="none"/>
+    </svg>
+  </div>
+  <div class="detail-timeframe-row">
+    <button class="detail-tf-btn active" data-tf="1D">1D</button>
+    <button class="detail-tf-btn" data-tf="1W">1W</button>
+    <button class="detail-tf-btn" data-tf="1M">1M</button>
+    <button class="detail-tf-btn" data-tf="3M">3M</button>
+    <button class="detail-tf-btn" data-tf="1Y">1Y</button>
+  </div>
+  <div class="detail-stats">
+    <div class="detail-stat"><div class="detail-stat-label">Market Cap</div><div class="detail-stat-value" id="detailMcap"></div></div>
+    <div class="detail-stat"><div class="detail-stat-label">24h Volume</div><div class="detail-stat-value" id="detailVol"></div></div>
+    <div class="detail-stat"><div class="detail-stat-label">24h High</div><div class="detail-stat-value" id="detailHigh"></div></div>
+    <div class="detail-stat"><div class="detail-stat-label">24h Low</div><div class="detail-stat-value" id="detailLow"></div></div>
+    <div class="detail-stat"><div class="detail-stat-label">Circulating Supply</div><div class="detail-stat-value" id="detailSupply"></div></div>
+    <div class="detail-stat"><div class="detail-stat-label">All-Time High</div><div class="detail-stat-value" id="detailATH"></div></div>
+  </div>
+  <div class="detail-actions">
+    <button class="detail-btn detail-btn-buy">Buy</button>
+    <button class="detail-btn detail-btn-sell">Sell</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SEARCH OVERLAY
+══════════════════════════════════════ -->
+<div class="search-overlay" id="searchOverlay">
+  <div class="status-bar">
+    <span class="status-time">9:41</span>
+    <div class="status-icons">
+      <svg width="25" height="12" viewBox="0 0 25 12"><rect x="0" y="1" width="22" height="10" rx="3" stroke="#000" stroke-width="1" fill="none" opacity=".35"/><rect x="23" y="4" width="2" height="4" rx="1" fill="#000" opacity=".4"/><rect x="1" y="2" width="18" height="8" rx="0" fill="#000"/></svg>
+    </div>
+  </div>
+  <div class="search-overlay-bar">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="rgba(0,0,0,0.4)" stroke-width="1.5"><circle cx="6" cy="6" r="4.5"/><path d="M10 10L13 13"/></svg>
+    <input class="search-overlay-input" id="searchInput" placeholder="Symbol / Name" autofocus/>
+    <span class="search-cancel" id="searchCancel">Cancel</span>
+  </div>
+  <div class="search-results" id="searchResults"></div>
+</div>
+
+<script>
+(function() {
+  // ── Coin data ──
+  const coins = {
+    BTC:  { name:'Bitcoin',    icon:'₿', color:'#F7931A', price:'103,801.84', change:'+1.20%', up:true,  mcap:'$2.04T', vol:'$42.1B', high:'104,890', low:'101,320', supply:'19.67M BTC', ath:'$108,268' },
+    ETH:  { name:'Ethereum',   icon:'Ξ', color:'#627EEA', price:'2,665.34',   change:'+1.13%', up:true,  mcap:'$320.8B', vol:'$18.3B', high:'2,710', low:'2,590', supply:'120.4M ETH', ath:'$4,891' },
+    XRP:  { name:'XRP',        icon:'X', color:'#346AA9', price:'2.5872',     change:'+0.89%', up:true,  mcap:'$148.2B', vol:'$6.7B',  high:'2.65', low:'2.51', supply:'57.4B XRP', ath:'$3.84' },
+    USDT: { name:'Tether',     icon:'₮', color:'#26A17B', price:'1.0003',     change:'+0.09%', up:true,  mcap:'$143.1B', vol:'$55.2B', high:'1.001', low:'0.999', supply:'143.1B USDT', ath:'$1.21' },
+    BNB:  { name:'BNB',        icon:'B', color:'#F3BA2F', price:'321.45',     change:'+0.55%', up:true,  mcap:'$46.8B',  vol:'$1.4B',  high:'326', low:'318', supply:'145.9M BNB', ath:'$793' },
+    SOL:  { name:'Solana',     icon:'◎', color:'#9945FF', price:'137.82',     change:'-1.24%', up:false, mcap:'$71.3B',  vol:'$4.2B',  high:'142', low:'135', supply:'517.6M SOL', ath:'$293' },
+    DOGE: { name:'Dogecoin',   icon:'Ð', color:'#C2A633', price:'0.1842',     change:'+2.10%', up:true,  mcap:'$27.1B',  vol:'$1.1B',  high:'0.191', low:'0.178', supply:'147.2B DOGE', ath:'$0.74' },
+  };
+
+  const phone = document.querySelector('.phone');
+
+  // ── 1. L1 Tab Switching ──
+  document.querySelectorAll('.tab-l1').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.tab-l1').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+    });
+  });
+
+  // ── 2. Sub-tab switching ──
+  document.querySelectorAll('.sub-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.sub-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+    });
+  });
+
+  // ── 3. List tab switching ──
+  document.querySelectorAll('.list-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.list-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+    });
+  });
+
+  // ── 4. Segment tabs (Net Flow / AUM) ──
+  document.querySelectorAll('.seg-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.seg-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+    });
+  });
+
+  // ── 5. Text tabs (ETF fund flow) ──
+  document.querySelectorAll('.text-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.text-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+    });
+  });
+
+  // ── 6. Bottom nav tab switching ──
+  document.querySelectorAll('.tab-bar-item').forEach(item => {
+    item.addEventListener('click', () => {
+      document.querySelectorAll('.tab-bar-item').forEach(t => {
+        t.classList.remove('active');
+        t.querySelector('.tab-bar-label').style.cssText = '';
+        t.querySelectorAll('svg path, svg rect, svg circle').forEach(el => el.removeAttribute('fill'));
+      });
+      item.classList.add('active');
+    });
+  });
+
+  // ── 7. Detail Panel ──
+  const panel = document.getElementById('detailPanel');
+  const detailBack = document.getElementById('detailBack');
+
+  // Append panel inside phone shell
+  phone.appendChild(panel);
+
+  function generateSparkPoints(up, n=20) {
+    const pts = [];
+    let y = up ? 120 : 40;
+    for (let i = 0; i < n; i++) {
+      const x = (i / (n - 1)) * 343;
+      y += (Math.random() - (up ? 0.35 : 0.65)) * 18;
+      y = Math.max(10, Math.min(150, y));
+      pts.push([x, y]);
+    }
+    return pts;
+  }
+
+  function pointsToPath(pts) {
+    return pts.map((p, i) => `${i === 0 ? 'M' : 'L'}${p[0].toFixed(1)},${p[1].toFixed(1)}`).join(' ');
+  }
+
+  function openDetail(coinKey) {
+    const c = coins[coinKey];
+    if (!c) return;
+    document.getElementById('detailIcon').textContent = c.icon;
+    document.getElementById('detailIcon').style.background = c.color;
+    document.getElementById('detailTicker').textContent = coinKey + 'USD';
+    document.getElementById('detailName').textContent = c.name;
+    document.getElementById('detailPrice').textContent = c.price;
+    const badge = document.getElementById('detailBadge');
+    badge.textContent = c.change;
+    badge.style.background = c.up ? '#009B67' : '#FF381A';
+    document.getElementById('detailMcap').textContent = c.mcap;
+    document.getElementById('detailVol').textContent = c.vol;
+    document.getElementById('detailHigh').textContent = c.high;
+    document.getElementById('detailLow').textContent = c.low;
+    document.getElementById('detailSupply').textContent = c.supply;
+    document.getElementById('detailATH').textContent = c.ath;
+
+    // Chart
+    const pts = generateSparkPoints(c.up);
+    const linePath = pointsToPath(pts);
+    const last = pts[pts.length - 1];
+    const fillPath = linePath + ` L${last[0]},160 L0,160 Z`;
+    const color = c.up ? '#009B67' : '#FF381A';
+    const chartLine = document.getElementById('detailChartLine');
+    const chartFill = document.getElementById('detailChartFill');
+    chartLine.setAttribute('d', linePath);
+    chartLine.setAttribute('stroke', color);
+    chartFill.setAttribute('d', fillPath);
+    document.querySelector('#chartGrad stop:first-child').setAttribute('stop-color', color);
+
+    // Reset timeframe
+    document.querySelectorAll('.detail-tf-btn').forEach(b => b.classList.remove('active'));
+    document.querySelector('.detail-tf-btn[data-tf="1D"]').classList.add('active');
+
+    panel.classList.add('open');
+  }
+
+  detailBack.addEventListener('click', () => panel.classList.remove('open'));
+
+  // Timeframe buttons redraw chart
+  document.querySelectorAll('.detail-tf-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.detail-tf-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      // Re-generate chart for visual feedback
+      const isUp = document.getElementById('detailBadge').style.background === 'rgb(0, 155, 103)';
+      const pts = generateSparkPoints(isUp);
+      const linePath = pointsToPath(pts);
+      const last = pts[pts.length - 1];
+      document.getElementById('detailChartLine').setAttribute('d', linePath);
+      document.getElementById('detailChartFill').setAttribute('d', linePath + ` L${last[0]},160 L0,160 Z`);
+    });
+  });
+
+  // Crypto list rows
+  document.querySelectorAll('.list-row[data-coin]').forEach(row => {
+    row.addEventListener('click', () => openDetail(row.dataset.coin));
+  });
+
+  // Major Crypto chips
+  const chipCoins = ['BTC','ETH','XRP','SOL','DOGE','BNB'];
+  document.querySelectorAll('.crypto-chip').forEach((chip, i) => {
+    if (chipCoins[i]) chip.addEventListener('click', () => openDetail(chipCoins[i]));
+  });
+
+  // ── 8. Search Bar / Overlay ──
+  const searchOverlay = document.getElementById('searchOverlay');
+  const searchInput = document.getElementById('searchInput');
+  const searchCancel = document.getElementById('searchCancel');
+  const searchResults = document.getElementById('searchResults');
+
+  phone.appendChild(searchOverlay);
+
+  function renderSearchResults(query) {
+    const q = query.toLowerCase();
+    const matches = Object.entries(coins).filter(([k, v]) =>
+      k.toLowerCase().includes(q) || v.name.toLowerCase().includes(q)
+    );
+    if (!matches.length) {
+      searchResults.innerHTML = `<div style="padding:24px 16px;text-align:center;color:rgba(0,0,0,0.4);font-size:14px;">No results for "${query}"</div>`;
+      return;
+    }
+    searchResults.innerHTML = matches.map(([k, c]) => `
+      <div class="search-result-item" data-coin="${k}">
+        <div class="search-result-icon" style="background:${c.color}">${c.icon}</div>
+        <div>
+          <div class="search-result-name">${k}</div>
+          <div class="search-result-sub">${c.name}</div>
+        </div>
+        <div class="search-result-price">
+          <div class="search-result-price-val">${c.price}</div>
+          <div class="search-result-change ${c.up ? 'up' : 'down'}">${c.change}</div>
+        </div>
+      </div>`).join('');
+
+    searchResults.querySelectorAll('.search-result-item').forEach(item => {
+      item.addEventListener('click', () => {
+        closeSearch();
+        openDetail(item.dataset.coin);
+      });
+    });
+  }
+
+  function openSearch() {
+    searchOverlay.classList.add('open');
+    setTimeout(() => searchInput.focus(), 100);
+    renderSearchResults('');
+  }
+  function closeSearch() {
+    searchOverlay.classList.remove('open');
+    searchInput.value = '';
+    searchResults.innerHTML = '';
+  }
+
+  document.querySelector('.search-bar').addEventListener('click', openSearch);
+  searchCancel.addEventListener('click', closeSearch);
+  searchInput.addEventListener('input', () => renderSearchResults(searchInput.value));
+})();
+</script>
+
+</body></html>
