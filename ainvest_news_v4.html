@@ -1,0 +1,515 @@
+
+<style>
+:root {
+  --brand: #165DFF;
+  --bg-page: #FFFFFF;
+  --bg-nav: #FFFFFF;
+  --bg-section-gap: #F2F2F2;
+  --fg-l1_2: #F2F2F2;
+  --text-p: #000000;
+  --text-s: rgba(0,0,0,0.6);
+  --text-t: rgba(0,0,0,0.4);
+  --text-q: rgba(0,0,0,0.2);
+  --divider-l2: rgba(0,0,0,0.10);
+  --divider-l3: rgba(0,0,0,0.05);
+  --hover-bg: rgba(0,0,0,0.04);
+  --pill-inactive-bg: #F2F2F2;
+  --pill-inactive-text: rgba(0,0,0,0.6);
+  --pill-active-bg: #000000;
+  --pill-active-text: #FFFFFF;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-page: #171717; --bg-nav: #171717; --bg-section-gap: #000000;
+    --fg-l1_2: #292929; --text-p: #FFFFFF;
+    --text-s: rgba(255,255,255,0.6); --text-t: rgba(255,255,255,0.4); --text-q: rgba(255,255,255,0.2);
+    --divider-l2: rgba(255,255,255,0.12); --divider-l3: rgba(255,255,255,0.07);
+    --hover-bg: rgba(255,255,255,0.08);
+    --pill-inactive-bg: #292929; --pill-inactive-text: rgba(255,255,255,0.6);
+    --pill-active-bg: #FFFFFF; --pill-active-text: #000000; --brand: #3371FF;
+  }
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; -webkit-font-smoothing: antialiased; background: var(--bg-page); color: var(--text-p); }
+.screen { width: 390px; min-height: 100vh; background: var(--bg-page); overflow-x: hidden; margin: 0 auto; }
+
+/* PRIMARY NAV */
+.nav-primary { background: var(--bg-nav); border-bottom: 0.5px solid var(--divider-l2); position: sticky; top: 0; z-index: 100; }
+.nav-primary-inner { display: flex; align-items: center; padding: 0 16px; height: 48px; }
+.nav-logo { display: flex; align-items: center; gap: 6px; margin-right: 20px; flex-shrink: 0; }
+.nav-logo-mark { width: 24px; height: 24px; background: var(--brand); border-radius: 6px; display: flex; align-items: center; justify-content: center; }
+.nav-logo-text { font-size: 16px; font-weight: 700; color: var(--text-p); letter-spacing: -0.3px; }
+.line-tabs-list { display: flex; flex: 1; height: 100%; }
+.line-tab { padding: 0 12px; height: 48px; display: flex; align-items: center; font-size: 14px; font-weight: 400; color: var(--text-s); cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap; transition: color 0.15s; }
+.line-tab.active { font-weight: 600; color: var(--text-p); border-bottom-color: var(--text-p); }
+.line-tab:hover:not(.active) { color: var(--text-p); background: var(--hover-bg); }
+.nav-actions { display: flex; gap: 4px; margin-left: 8px; }
+.nav-icon-btn { width: 32px; height: 32px; border-radius: 9999px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text-s); }
+.nav-icon-btn:hover { background: var(--hover-bg); color: var(--text-p); }
+
+/* SECONDARY NAV: PillTabs level=page — Gray Fill inactive, NO border/stroke */
+.nav-secondary { background: var(--bg-nav); border-bottom: 0.5px solid var(--divider-l2); overflow-x: auto; scrollbar-width: none; }
+.nav-secondary::-webkit-scrollbar { display: none; }
+.nav-secondary-inner { display: flex; align-items: center; padding: 8px 16px; gap: 8px; width: max-content; }
+.pill-tab { height: 30px; padding: 0 14px; border-radius: 9999px; font-size: 13px; font-weight: 400; cursor: pointer; display: flex; align-items: center; white-space: nowrap; transition: background 0.15s, color 0.15s; border: none; background: var(--pill-inactive-bg); color: var(--pill-inactive-text); }
+.pill-tab.active { background: var(--pill-active-bg); color: var(--pill-active-text); font-weight: 600; }
+.pill-tab:hover:not(.active) { background: #E8E8E8; color: var(--text-p); }
+
+/* TAB PANES */
+.tab-pane { display: none; }
+.tab-pane.active { display: block; }
+
+/* CONTENT */
+.content { background: var(--bg-page); padding-bottom: 72px; }
+
+/* 6px GREY SECTION DIVIDER */
+.section-gap { height: 6px; background: var(--bg-section-gap); }
+
+/* SECTION HEADER */
+.section-header { display: flex; align-items: center; justify-content: space-between; padding: 20px 16px 0; }
+.section-title { font-size: 16px; font-weight: 700; color: var(--text-p); }
+.section-more { font-size: 13px; color: var(--text-s); font-weight: 400; cursor: pointer; display: flex; align-items: center; gap: 2px; }
+
+/* TOP NEWS: flat list */
+.top-news-list { padding: 8px 0 16px; }
+.top-news-item { display: flex; align-items: flex-start; gap: 12px; padding: 11px 16px; cursor: pointer; transition: background 0.12s; }
+.top-news-item:hover { background: var(--hover-bg); }
+.news-rank { font-size: 14px; font-weight: 600; color: var(--text-q); line-height: 20px; width: 20px; flex-shrink: 0; text-align: right; }
+.news-rank.top3 { color: var(--text-p); }
+.news-item-body { flex: 1; min-width: 0; }
+.news-item-title { font-size: 14px; font-weight: 600; color: var(--text-p); line-height: 20px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 5px; }
+.news-bottom-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.news-tag-inline { font-size: 11px; font-weight: 600; }
+.tag-markets { color: var(--brand); }
+.tag-tech { color: var(--brand); }
+.tag-geo { color: #FF381A; }
+.tag-earnings { color: #009B67; }
+.tag-macro { color: #FF6600; }
+.news-dot { width: 2px; height: 2px; border-radius: 50%; background: var(--text-q); flex-shrink: 0; }
+.news-source { font-size: 11px; color: var(--text-t); }
+.news-time { font-size: 11px; color: var(--text-t); }
+.news-divider { height: 0.5px; background: var(--divider-l3); margin: 0 16px 0 48px; }
+
+/* PODCAST: swipeable with touch/mouse drag */
+.podcast-scroll { overflow-x: auto; scrollbar-width: none; padding: 12px 16px 16px; cursor: grab; user-select: none; }
+.podcast-scroll::-webkit-scrollbar { display: none; }
+.podcast-scroll.dragging { cursor: grabbing; }
+.podcast-row { display: flex; gap: 12px; width: max-content; }
+.podcast-card { width: 176px; border-radius: 16px; overflow: hidden; cursor: pointer; flex-shrink: 0; }
+.podcast-cover { width: 100%; height: 176px; position: relative; display: flex; flex-direction: column; justify-content: flex-end; padding: 10px 10px 46px; background-size: cover; background-position: center; }
+.podcast-cover::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.65) 100%); border-radius: 0; }
+.podcast-cover-label { font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.65); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; position: relative; z-index: 1; }
+.podcast-cover-title { font-size: 12px; font-weight: 700; color: #fff; line-height: 16px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; position: relative; z-index: 1; }
+.podcast-play-btn { position: absolute; bottom: 10px; right: 10px; width: 36px; height: 36px; background: rgba(255,255,255,0.92); border-radius: 9999px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 2; }
+.podcast-play-btn.playing { background: #000000; }
+.podcast-duration { position: absolute; top: 10px; right: 10px; font-size: 11px; color: rgba(255,255,255,0.9); font-weight: 600; background: rgba(0,0,0,0.38); padding: 2px 6px; border-radius: 4px; z-index: 2; }
+.podcast-body { padding: 10px 12px 12px; background: var(--fg-l1_2); }
+.podcast-title { font-size: 12px; font-weight: 600; color: var(--text-p); line-height: 16px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 4px; }
+.podcast-host { font-size: 11px; color: var(--text-t); }
+
+/* MINI PLAYER */
+.mini-player { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 390px; background: var(--bg-nav); border-top: 0.5px solid var(--divider-l2); padding: 10px 16px 12px; display: flex; align-items: center; gap: 10px; z-index: 200; }
+.mini-player-cover { width: 40px; height: 40px; border-radius: 6px; flex-shrink: 0; background-size: cover; background-position: center; }
+.mini-player-info { flex: 1; min-width: 0; }
+.mini-player-title { font-size: 13px; font-weight: 600; color: var(--text-p); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mini-player-sub { font-size: 11px; color: var(--text-t); margin-top: 1px; }
+.mini-progress { height: 2px; background: var(--divider-l2); margin-top: 5px; border-radius: 1px; overflow: hidden; }
+.mini-progress-bar { height: 100%; background: var(--text-p); border-radius: 1px; transition: width 0.5s linear; }
+.mini-player-controls { display: flex; align-items: center; gap: 6px; }
+.ctrl-btn { width: 32px; height: 32px; border-radius: 9999px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text-s); }
+.ctrl-btn:hover { background: var(--hover-bg); }
+.ctrl-btn.play-main { width: 36px; height: 36px; background: var(--text-p); color: var(--bg-page); border-radius: 9999px; }
+
+/* NEWS WITH COMMENTS */
+.comment-news-card { background: var(--bg-page); border-bottom: 0.5px solid var(--divider-l3); }
+.cnc-top { padding: 16px 16px 10px; display: flex; gap: 10px; }
+.cnc-img { width: 80px; height: 80px; border-radius: 6px; flex-shrink: 0; background-size: cover; background-position: center; }
+.cnc-content { flex: 1; min-width: 0; }
+.cnc-title { font-size: 14px; font-weight: 600; color: var(--text-p); line-height: 20px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 6px; }
+.cnc-meta-row { display: flex; align-items: center; gap: 5px; flex-wrap: wrap; }
+.stocks-row { display: flex; gap: 6px; padding: 0 16px 10px; overflow-x: auto; scrollbar-width: none; }
+.stocks-row::-webkit-scrollbar { display: none; }
+.stock-chip { display: flex; align-items: center; gap: 4px; background: var(--fg-l1_2); padding: 4px 8px; border-radius: 6px; white-space: nowrap; flex-shrink: 0; }
+.stock-ticker { font-size: 12px; font-weight: 600; color: var(--text-p); }
+.up { color: #009B67; font-size: 12px; font-weight: 600; }
+.down { color: #FF381A; font-size: 12px; font-weight: 600; }
+.sec-divider { height: 0.5px; background: var(--divider-l3); margin: 0 16px; }
+.comments-list { padding: 4px 16px 8px; }
+.comment-row { display: flex; gap: 8px; align-items: flex-start; padding: 7px 0; border-bottom: 0.5px solid var(--divider-l3); }
+.comment-row:last-child { border-bottom: none; }
+.avatar { width: 28px; height: 28px; border-radius: 9999px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; }
+.comment-body { flex: 1; min-width: 0; }
+.comment-user { font-size: 12px; font-weight: 600; color: var(--text-p); margin-bottom: 2px; }
+.comment-text { font-size: 13px; color: var(--text-s); line-height: 18px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.comment-likes { display: flex; align-items: center; gap: 3px; margin-top: 4px; }
+.like-count { font-size: 11px; color: var(--text-t); }
+.view-all-comments { font-size: 12px; color: var(--text-s); padding: 6px 16px 12px; cursor: pointer; display: block; }
+
+.playing-wave { display: flex; align-items: flex-end; gap: 2px; height: 14px; }
+.wave-bar { width: 3px; border-radius: 2px; background: #fff; animation: wave 0.8s ease-in-out infinite alternate; }
+.wave-bar.dark { background: #000; }
+.wave-bar:nth-child(2) { animation-delay: 0.15s; }
+.wave-bar:nth-child(3) { animation-delay: 0.3s; }
+@keyframes wave { from { height: 4px; } to { height: 12px; } }
+</style>
+
+<div class="screen">
+  <!-- PRIMARY NAV -->
+  <div class="nav-primary">
+    <div class="nav-primary-inner">
+      <div class="nav-logo">
+        <div class="nav-logo-mark"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 11L5.5 6.5L8 9L10.5 5.5L12 7" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <span class="nav-logo-text">AInvest</span>
+      </div>
+      <div class="line-tabs-list">
+        <div class="line-tab active" onclick="switchPrimary(this,'news')">News</div>
+        <div class="line-tab" onclick="switchPrimary(this,'media')">Media</div>
+        <div class="line-tab" onclick="switchPrimary(this,'community')">Community</div>
+      </div>
+      <div class="nav-actions">
+        <div class="nav-icon-btn"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="5.5" stroke="currentColor" stroke-width="1.5"/><path d="M13 13L17 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+        <div class="nav-icon-btn"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 10h10M5 6h10M5 14h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECONDARY NAV: PillTabs, Gray Fill inactive -->
+  <div class="nav-secondary">
+    <div class="nav-secondary-inner" id="pillTabsBar">
+      <div class="pill-tab active" onclick="switchTopic(this,'forYou')">For You</div>
+      <div class="pill-tab" onclick="switchTopic(this,'earnings')">Earnings Hub</div>
+      <div class="pill-tab" onclick="switchTopic(this,'iran')">Iran</div>
+      <div class="pill-tab" onclick="switchTopic(this,'fed')">Fed Rate</div>
+      <div class="pill-tab" onclick="switchTopic(this,'tech')">Tech</div>
+      <div class="pill-tab" onclick="switchTopic(this,'energy')">Energy</div>
+      <div class="pill-tab" onclick="switchTopic(this,'crypto')">Crypto</div>
+      <div class="pill-tab" onclick="switchTopic(this,'ipo')">IPO</div>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- FOR YOU PANE -->
+    <div class="tab-pane active" id="pane-forYou">
+
+      <!-- TOP NEWS -->
+      <div class="section-header">
+        <span class="section-title">Top News</span>
+        <span class="section-more">See all <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="vertical-align:-2px"><path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </div>
+      <div class="top-news-list">
+        <div class="top-news-item">
+          <div class="news-rank top3">01</div>
+          <div class="news-item-body">
+            <div class="news-item-title">Fed signals pause as inflation nears 2% target ahead of May meeting</div>
+            <div class="news-bottom-row"><span class="news-tag-inline tag-markets">Markets</span><div class="news-dot"></div><span class="news-source">Reuters</span><div class="news-dot"></div><span class="news-time">2h ago</span></div>
+          </div>
+        </div>
+        <div class="news-divider"></div>
+        <div class="top-news-item">
+          <div class="news-rank top3">02</div>
+          <div class="news-item-body">
+            <div class="news-item-title">Nvidia hits $4T valuation as AI chip demand outpaces supply by 3x</div>
+            <div class="news-bottom-row"><span class="news-tag-inline tag-tech">Tech</span><div class="news-dot"></div><span class="news-source">Bloomberg</span><div class="news-dot"></div><span class="news-time">4h ago</span></div>
+          </div>
+        </div>
+        <div class="news-divider"></div>
+        <div class="top-news-item">
+          <div class="news-rank top3">03</div>
+          <div class="news-item-body">
+            <div class="news-item-title">Iran-US nuclear talks collapse, oil futures spike to $94/bbl overnight</div>
+            <div class="news-bottom-row"><span class="news-tag-inline tag-geo">Geopolitics</span><div class="news-dot"></div><span class="news-source">FT</span><div class="news-dot"></div><span class="news-time">5h ago</span></div>
+          </div>
+        </div>
+        <div class="news-divider"></div>
+        <div class="top-news-item">
+          <div class="news-rank">04</div>
+          <div class="news-item-body">
+            <div class="news-item-title">Tesla Q1 beats: EPS $0.72 vs $0.53 est. as margins recover sharply</div>
+            <div class="news-bottom-row"><span class="news-tag-inline tag-earnings">Earnings</span><div class="news-dot"></div><span class="news-source">WSJ</span><div class="news-dot"></div><span class="news-time">6h ago</span></div>
+          </div>
+        </div>
+        <div class="news-divider"></div>
+        <div class="top-news-item">
+          <div class="news-rank">05</div>
+          <div class="news-item-body">
+            <div class="news-item-title">US GDP growth slows to 1.6% in Q1 as consumer spending cools</div>
+            <div class="news-bottom-row"><span class="news-tag-inline tag-macro">Macro</span><div class="news-dot"></div><span class="news-source">CNBC</span><div class="news-dot"></div><span class="news-time">8h ago</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6px GREY DIVIDER -->
+      <div class="section-gap"></div>
+
+      <!-- PODCAST -->
+      <div class="section-header">
+        <span class="section-title">Podcast</span>
+        <span class="section-more">See all <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="vertical-align:-2px"><path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </div>
+      <div class="podcast-scroll" id="podScroll">
+        <div class="podcast-row">
+          <!-- Pod 1: Fed / stone building image -->
+          <div class="podcast-card">
+            <div class="podcast-cover" style="background-image:url('https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=400&q=80')">
+              <div class="podcast-cover-label">Markets Today</div>
+              <div class="podcast-cover-title">Fed Pause & What It Means For Your Portfolio</div>
+              <span class="podcast-duration">28:14</span>
+              <div class="podcast-play-btn playing" id="play0" onclick="togglePlay(event,0)">
+                <div class="playing-wave"><div class="wave-bar dark"></div><div class="wave-bar dark"></div><div class="wave-bar dark"></div></div>
+              </div>
+            </div>
+            <div class="podcast-body"><div class="podcast-title">Fed Pause & What It Means For Your Portfolio</div><div class="podcast-host">AInvest Daily · 28 min</div></div>
+          </div>
+          <!-- Pod 2: Nvidia/chip -->
+          <div class="podcast-card">
+            <div class="podcast-cover" style="background-image:url('https://images.unsplash.com/photo-1518770660439-4636190af475?w=400&q=80')">
+              <div class="podcast-cover-label">Tech Signals</div>
+              <div class="podcast-cover-title">AI Arms Race: Nvidia, AMD, or Intel?</div>
+              <span class="podcast-duration">41:02</span>
+              <div class="podcast-play-btn" id="play1" onclick="togglePlay(event,1)">
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M3 1.5l8 5-8 5V1.5z" fill="#000"/></svg>
+              </div>
+            </div>
+            <div class="podcast-body"><div class="podcast-title">AI Arms Race: Nvidia, AMD, or Intel?</div><div class="podcast-host">Tech Signals · 41 min</div></div>
+          </div>
+          <!-- Pod 3: Tesla car -->
+          <div class="podcast-card">
+            <div class="podcast-cover" style="background-image:url('https://images.unsplash.com/photo-1617788138017-80ad40651399?w=400&q=80')">
+              <div class="podcast-cover-label">Earnings Edge</div>
+              <div class="podcast-cover-title">Breaking Down Tesla's Surprise Q1 Beat</div>
+              <span class="podcast-duration">19:45</span>
+              <div class="podcast-play-btn" id="play2" onclick="togglePlay(event,2)">
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M3 1.5l8 5-8 5V1.5z" fill="#000"/></svg>
+              </div>
+            </div>
+            <div class="podcast-body"><div class="podcast-title">Breaking Down Tesla's Surprise Q1 Beat</div><div class="podcast-host">Earnings Edge · 20 min</div></div>
+          </div>
+          <!-- Pod 4: Oil/energy -->
+          <div class="podcast-card">
+            <div class="podcast-cover" style="background-image:url('https://images.unsplash.com/photo-1509391366360-2e959784a276?w=400&q=80')">
+              <div class="podcast-cover-label">Macro Watch</div>
+              <div class="podcast-cover-title">Iran, Oil & Why $100 Crude Is Back on the Table</div>
+              <span class="podcast-duration">33:20</span>
+              <div class="podcast-play-btn" id="play3" onclick="togglePlay(event,3)">
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M3 1.5l8 5-8 5V1.5z" fill="#000"/></svg>
+              </div>
+            </div>
+            <div class="podcast-body"><div class="podcast-title">Iran, Oil & Why $100 Crude Is Back on the Table</div><div class="podcast-host">Macro Watch · 33 min</div></div>
+          </div>
+          <!-- Pod 5: Bitcoin -->
+          <div class="podcast-card">
+            <div class="podcast-cover" style="background-image:url('https://images.unsplash.com/photo-1640340434855-6084b1f4901c?w=400&q=80')">
+              <div class="podcast-cover-label">Crypto Corner</div>
+              <div class="podcast-cover-title">Bitcoin at $97K: Halving Cycle or Bubble?</div>
+              <span class="podcast-duration">52:08</span>
+              <div class="podcast-play-btn" id="play4" onclick="togglePlay(event,4)">
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M3 1.5l8 5-8 5V1.5z" fill="#000"/></svg>
+              </div>
+            </div>
+            <div class="podcast-body"><div class="podcast-title">Bitcoin at $97K: Halving Cycle or Bubble?</div><div class="podcast-host">Crypto Corner · 52 min</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6px GREY DIVIDER -->
+      <div class="section-gap"></div>
+
+      <!-- IN DISCUSSION -->
+      <div class="section-header">
+        <span class="section-title">In Discussion</span>
+        <span class="section-more">See all <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="vertical-align:-2px"><path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </div>
+      <div style="margin-top:12px;">
+        <div class="comment-news-card">
+          <div class="cnc-top">
+            <div class="cnc-img" style="background-image:url('https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=200&q=80')"></div>
+            <div class="cnc-content">
+              <div class="cnc-title">Fed signals pause as inflation nears 2% target ahead of May meeting</div>
+              <div class="cnc-meta-row"><span class="news-tag-inline tag-markets">Markets</span><div class="news-dot"></div><span class="news-source">Reuters</span><div class="news-dot"></div><span class="news-time">2h ago</span><div class="news-dot"></div><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1 10V3a1 1 0 011-1h8a1 1 0 011 1v5a1 1 0 01-1 1H3L1 10z" stroke="currentColor" stroke-width="1" stroke-linejoin="round"/></svg><span class="news-time">234</span></div>
+            </div>
+          </div>
+          <div class="stocks-row">
+            <div class="stock-chip"><span class="stock-ticker">SPY</span><span class="up">+1.2%</span></div>
+            <div class="stock-chip"><span class="stock-ticker">TLT</span><span class="up">+0.8%</span></div>
+            <div class="stock-chip"><span class="stock-ticker">GLD</span><span class="down">-0.3%</span></div>
+          </div>
+          <div class="sec-divider"></div>
+          <div class="comments-list">
+            <div class="comment-row">
+              <div class="avatar" style="background:rgba(22,93,255,0.12);color:#165DFF;">JK</div>
+              <div class="comment-body"><div class="comment-user">@jktrader</div><div class="comment-text">Bullish for growth stocks. A pause stabilizes the 10Y yield around 4.3%, lifting PE multiples for tech.</div><div class="comment-likes"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 10s-5-3-5-6a3 3 0 016 0 3 3 0 016 0c0 3-5 6-5 6z" stroke="currentColor" stroke-width="1"/></svg><span class="like-count">142</span></div></div>
+            </div>
+            <div class="comment-row">
+              <div class="avatar" style="background:rgba(0,155,103,0.12);color:#009B67;">SM</div>
+              <div class="comment-body"><div class="comment-user">@sarah_macro</div><div class="comment-text">Core PCE still at 2.6%. They'll need at least 2 more prints before cutting.</div><div class="comment-likes"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 10s-5-3-5-6a3 3 0 016 0 3 3 0 016 0c0 3-5 6-5 6z" stroke="currentColor" stroke-width="1"/></svg><span class="like-count">89</span></div></div>
+            </div>
+          </div>
+          <a class="view-all-comments">View all 234 comments →</a>
+        </div>
+        <div class="comment-news-card">
+          <div class="cnc-top">
+            <div class="cnc-img" style="background-image:url('https://images.unsplash.com/photo-1518770660439-4636190af475?w=200&q=80')"></div>
+            <div class="cnc-content">
+              <div class="cnc-title">Nvidia hits $4T valuation as AI chip demand outpaces supply by 3x in 2025</div>
+              <div class="cnc-meta-row"><span class="news-tag-inline tag-tech">Tech</span><div class="news-dot"></div><span class="news-source">Bloomberg</span><div class="news-dot"></div><span class="news-time">4h ago</span><div class="news-dot"></div><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1 10V3a1 1 0 011-1h8a1 1 0 011 1v5a1 1 0 01-1 1H3L1 10z" stroke="currentColor" stroke-width="1" stroke-linejoin="round"/></svg><span class="news-time">519</span></div>
+            </div>
+          </div>
+          <div class="stocks-row">
+            <div class="stock-chip"><span class="stock-ticker">NVDA</span><span class="up">+3.7%</span></div>
+            <div class="stock-chip"><span class="stock-ticker">AMD</span><span class="up">+1.9%</span></div>
+            <div class="stock-chip"><span class="stock-ticker">SMCI</span><span class="up">+4.2%</span></div>
+          </div>
+          <div class="sec-divider"></div>
+          <div class="comments-list">
+            <div class="comment-row">
+              <div class="avatar" style="background:rgba(179,65,217,0.12);color:#B341D9;">AI</div>
+              <div class="comment-body"><div class="comment-user">@aiinvestor</div><div class="comment-text">$4T and still at 35x forward earnings. Priced for perfection — any miss will be brutal.</div><div class="comment-likes"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 10s-5-3-5-6a3 3 0 016 0 3 3 0 016 0c0 3-5 6-5 6z" stroke="currentColor" stroke-width="1"/></svg><span class="like-count">311</span></div></div>
+            </div>
+            <div class="comment-row">
+              <div class="avatar" style="background:rgba(22,93,255,0.12);color:#165DFF;">MW</div>
+              <div class="comment-body"><div class="comment-user">@mike_w</div><div class="comment-text">People said the same at $1T. The infrastructure buildout is multi-decade. Holding.</div><div class="comment-likes"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 10s-5-3-5-6a3 3 0 016 0 3 3 0 016 0c0 3-5 6-5 6z" stroke="currentColor" stroke-width="1"/></svg><span class="like-count">208</span></div></div>
+            </div>
+          </div>
+          <a class="view-all-comments">View all 519 comments →</a>
+        </div>
+        <div class="comment-news-card" style="border-bottom:none;">
+          <div class="cnc-top">
+            <div class="cnc-img" style="background-image:url('https://images.unsplash.com/photo-1509391366360-2e959784a276?w=200&q=80')"></div>
+            <div class="cnc-content">
+              <div class="cnc-title">Iran-US nuclear talks collapse, oil futures spike to $94/bbl overnight</div>
+              <div class="cnc-meta-row"><span class="news-tag-inline tag-geo">Geopolitics</span><div class="news-dot"></div><span class="news-source">FT</span><div class="news-dot"></div><span class="news-time">5h ago</span><div class="news-dot"></div><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1 10V3a1 1 0 011-1h8a1 1 0 011 1v5a1 1 0 01-1 1H3L1 10z" stroke="currentColor" stroke-width="1" stroke-linejoin="round"/></svg><span class="news-time">381</span></div>
+            </div>
+          </div>
+          <div class="stocks-row">
+            <div class="stock-chip"><span class="stock-ticker">XOM</span><span class="up">+2.1%</span></div>
+            <div class="stock-chip"><span class="stock-ticker">CVX</span><span class="up">+1.8%</span></div>
+            <div class="stock-chip"><span class="stock-ticker">USO</span><span class="up">+3.4%</span></div>
+          </div>
+          <div class="sec-divider"></div>
+          <div class="comments-list">
+            <div class="comment-row">
+              <div class="avatar" style="background:rgba(255,56,26,0.12);color:#FF381A;">TH</div>
+              <div class="comment-body"><div class="comment-user">@tradehawk</div><div class="comment-text">$100 oil incoming. Adding XOM and CVX — both screaming buys at $90+ crude.</div><div class="comment-likes"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 10s-5-3-5-6a3 3 0 016 0 3 3 0 016 0c0 3-5 6-5 6z" stroke="currentColor" stroke-width="1"/></svg><span class="like-count">198</span></div></div>
+            </div>
+            <div class="comment-row">
+              <div class="avatar" style="background:rgba(0,155,103,0.12);color:#009B67;">LG</div>
+              <div class="comment-body"><div class="comment-user">@long_game</div><div class="comment-text">Geopolitical risk premium fades in 2–3 weeks like always. Don't chase the spike.</div><div class="comment-likes"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 10s-5-3-5-6a3 3 0 016 0 3 3 0 016 0c0 3-5 6-5 6z" stroke="currentColor" stroke-width="1"/></svg><span class="like-count">156</span></div></div>
+            </div>
+          </div>
+          <a class="view-all-comments">View all 381 comments →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- OTHER TAB PANES (placeholder content) -->
+    <div class="tab-pane" id="pane-earnings">
+      <div style="padding:40px 16px;text-align:center;color:var(--text-t);font-size:14px;">Earnings Hub content</div>
+    </div>
+    <div class="tab-pane" id="pane-iran">
+      <div style="padding:40px 16px;text-align:center;color:var(--text-t);font-size:14px;">Iran coverage</div>
+    </div>
+    <div class="tab-pane" id="pane-fed">
+      <div style="padding:40px 16px;text-align:center;color:var(--text-t);font-size:14px;">Fed Rate coverage</div>
+    </div>
+    <div class="tab-pane" id="pane-tech">
+      <div style="padding:40px 16px;text-align:center;color:var(--text-t);font-size:14px;">Tech coverage</div>
+    </div>
+    <div class="tab-pane" id="pane-energy">
+      <div style="padding:40px 16px;text-align:center;color:var(--text-t);font-size:14px;">Energy coverage</div>
+    </div>
+    <div class="tab-pane" id="pane-crypto">
+      <div style="padding:40px 16px;text-align:center;color:var(--text-t);font-size:14px;">Crypto coverage</div>
+    </div>
+    <div class="tab-pane" id="pane-ipo">
+      <div style="padding:40px 16px;text-align:center;color:var(--text-t);font-size:14px;">IPO coverage</div>
+    </div>
+
+  </div>
+
+  <!-- MINI PLAYER -->
+  <div class="mini-player">
+    <div class="mini-player-cover" id="mpCover" style="background-image:url('https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=120&q=80')"></div>
+    <div class="mini-player-info">
+      <div class="mini-player-title" id="mpTitle">Fed Pause & What It Means For Your Portfolio</div>
+      <div class="mini-player-sub" id="mpHost">AInvest Daily</div>
+      <div class="mini-progress"><div class="mini-progress-bar" id="mpBar" style="width:38%"></div></div>
+    </div>
+    <div class="mini-player-controls">
+      <div class="ctrl-btn"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 3v10M3 8l7-5v10L3 8z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="ctrl-btn play-main" id="mpPlayBtn" onclick="togglePlay(event, currentPlaying >= 0 ? currentPlaying : 0)">
+        <div class="playing-wave"><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div></div>
+      </div>
+      <div class="ctrl-btn"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13 3v10M13 8L6 3v10l7-5z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const podcasts = [
+  { title:"Fed Pause & What It Means For Your Portfolio", host:"AInvest Daily", img:"https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=120&q=80" },
+  { title:"AI Arms Race: Nvidia, AMD, or Intel?", host:"Tech Signals", img:"https://images.unsplash.com/photo-1518770660439-4636190af475?w=120&q=80" },
+  { title:"Breaking Down Tesla's Surprise Q1 Beat", host:"Earnings Edge", img:"https://images.unsplash.com/photo-1617788138017-80ad40651399?w=120&q=80" },
+  { title:"Iran, Oil & Why $100 Crude Is Back on the Table", host:"Macro Watch", img:"https://images.unsplash.com/photo-1509391366360-2e959784a276?w=120&q=80" },
+  { title:"Bitcoin at $97K: Halving Cycle or Bubble?", host:"Crypto Corner", img:"https://images.unsplash.com/photo-1640340434855-6084b1f4901c?w=120&q=80" }
+];
+let currentPlaying = 0;
+let progress = 38;
+let progressInterval = setInterval(tick, 300);
+function tick() { progress = Math.min(100, progress + 0.15); const b = document.getElementById('mpBar'); if(b) b.style.width = progress + '%'; }
+
+function waveHTML(dark) {
+  const c = dark ? 'wave-bar dark' : 'wave-bar';
+  return `<div class="playing-wave"><div class="${c}"></div><div class="${c}"></div><div class="${c}"></div></div>`;
+}
+function playIconBlack() { return `<svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M3 1.5l8 5-8 5V1.5z" fill="#000"/></svg>`; }
+function playIconWhite() { return `<svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M3 1.5l8 5-8 5V1.5z" fill="#fff"/></svg>`; }
+
+function togglePlay(e, idx) {
+  e.stopPropagation();
+  const wasPlaying = currentPlaying === idx;
+  if (currentPlaying >= 0) {
+    const old = document.getElementById('play' + currentPlaying);
+    if (old) { old.innerHTML = playIconBlack(); old.classList.remove('playing'); }
+  }
+  clearInterval(progressInterval);
+  if (wasPlaying) {
+    currentPlaying = -1;
+    document.getElementById('mpPlayBtn').innerHTML = playIconWhite();
+    return;
+  }
+  currentPlaying = idx;
+  const btn = document.getElementById('play' + idx);
+  btn.innerHTML = waveHTML(true); btn.classList.add('playing');
+  const mp = podcasts[idx];
+  document.getElementById('mpTitle').textContent = mp.title;
+  document.getElementById('mpHost').textContent = mp.host;
+  document.getElementById('mpCover').style.backgroundImage = `url('${mp.img}')`;
+  document.getElementById('mpPlayBtn').innerHTML = waveHTML(false);
+  if (idx !== 0) progress = 0;
+  progressInterval = setInterval(tick, 300);
+}
+
+function switchPrimary(el, tab) {
+  document.querySelectorAll('.line-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+}
+
+const topicPanes = ['forYou','earnings','iran','fed','tech','energy','crypto','ipo'];
+function switchTopic(el, paneId) {
+  document.querySelectorAll('.pill-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  topicPanes.forEach(id => {
+    const p = document.getElementById('pane-' + id);
+    if (p) p.classList.toggle('active', id === paneId);
+  });
+}
+
+// Swipe/drag for podcast scroll
+const ps = document.getElementById('podScroll');
+let isDown = false, startX, scrollLeft;
+ps.addEventListener('mousedown', e => { isDown = true; ps.classList.add('dragging'); startX = e.pageX - ps.offsetLeft; scrollLeft = ps.scrollLeft; });
+ps.addEventListener('mouseleave', () => { isDown = false; ps.classList.remove('dragging'); });
+ps.addEventListener('mouseup', () => { isDown = false; ps.classList.remove('dragging'); });
+ps.addEventListener('mousemove', e => { if(!isDown) return; e.preventDefault(); const x = e.pageX - ps.offsetLeft; ps.scrollLeft = scrollLeft - (x - startX); });
+</script>
